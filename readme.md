@@ -40,20 +40,6 @@ This project implements two complementary transformer-based models for EEG analy
 - **Data**: Filtered EEG signals (noise removed)
 - **Iterations**: 30,000 steps
 
-**Results**:
-
-![Training Loss](results/eeg_transformer_loss_ce_mse.png)
-
-*Training and validation loss curves showing stable convergence*
-
-**Generated Signals**:
-
-![Generated EEG](results/generated_eeg_signal.png)
-
-*Top: Full 4000-sample generated waveform | Bottom: Zoomed view showing realistic EEG patterns*
-
-![Signal Statistics](results/generated_eeg_statistics.png)
-
 *Statistical analysis: amplitude distribution, power spectrum (0-60 Hz), autocorrelation, and summary statistics*
 
 ### 2. Seizure Prediction Transformer (Fine-tuning)
