@@ -26,7 +26,7 @@ batch_size = 16                   # Reduced from 64
 accumulation_steps = 8            # Increased to maintain effective batch size
 block_size = 512                  # Reduced from 2048
 checkpoint_path = "eeg_transformer_memory_opt.pth"
-max_iters = 30000
+max_iters = 5000
 eval_interval = 1000
 learning_rate = 3e-4
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -144,7 +144,7 @@ def dequantize_from_expected(expected_level, norm_params):
 
 
 # ---------- Set data folder ----------
-filtered_dir = Path("/kaggle/input/dataset")
+filtered_dir = Path(fr"aaaaabnn\aaaaabnn_filtered")
 
 # Load
 signal = load_eeg_files(filtered_dir, max_samples=max_samples)

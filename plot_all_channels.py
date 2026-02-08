@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 import mne
 
 """
-plot_aaaaadpj_all_channels.py
+plot_all_channels.py
 
-Plot all channels from all CSV annotation files for patient aaaaadpj.
+Plot all channels from all CSV annotation files for patient.
 Each session (CSV file) will be plotted with all its channels.
 Uses the same color coding as plot.py: pre-ictal, ictal, post-ictal phases.
 """
@@ -163,8 +163,8 @@ def plot_session_all_channels(patient_name: str, session_folder: Path, csv_path:
 
 def main():
     # Patient folder
-    patient_folder = Path(__file__).parent / "aaaaadpj"
-    patient_name = "aaaaadpj"
+    patient_name = "aaaaaalq"
+    patient_folder = Path(__file__).parent / patient_name
     
     if not patient_folder.exists():
         print(f"❌ Patient folder not found: {patient_folder}")

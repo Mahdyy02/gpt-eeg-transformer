@@ -6,9 +6,9 @@ from scipy import signal
 from scipy.stats import variation
 
 """
-filter_and_merge_aaaaadpj.py
+filter_and_merge.py
 
-Pour chaque session du patient aaaaadpj :
+Pour chaque session du patient :
 1. Détecte les fréquences de bruit (uniformes sur toutes les bandes de fréquence)
 2. Applique un filtre notch pour enlever ces bruits
 3. Sauvegarde toutes les mesures dans un seul fichier EDF avec annotations par session
@@ -250,15 +250,15 @@ def process_session(csv_path: Path, edf_path: Path, outdir: Path, patient_name: 
 
 def main():
     # Dossier patient
-    patient_folder = Path(__file__).parent / "aaaaadpj"
-    patient_name = "aaaaadpj"
+    patient_name = "aaaaaaac"
+    patient_folder = Path(__file__).parent / patient_name
     
     if not patient_folder.exists():
         print(f"❌ Dossier patient non trouvé: {patient_folder}")
         return
     
     # Répertoire de sortie
-    outdir = Path("filtered_edf") / patient_name
+    outdir = Path("filtered_edf") / f"{patient_name}_filtered"
     outdir.mkdir(parents=True, exist_ok=True)
     
     print(f"\n{'#'*60}")

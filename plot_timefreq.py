@@ -6,9 +6,9 @@ import mne
 from scipy import signal
 
 """
-plot_aaaaadpj_timefreq.py
+plot_timefreq.py
 
-Plot time-frequency representations (spectrograms) for all channels of patient aaaaadpj.
+Plot time-frequency representations (spectrograms) for all channels of patient.
 Frequencies more prominent during seizures are colored differently from background frequencies.
 """
 
@@ -271,8 +271,8 @@ def process_session_timefreq(patient_name: str, csv_path: Path, edf_path: Path, 
 
 def main():
     # Patient folder
-    patient_folder = Path(__file__).parent / "aaaaadpj"
-    patient_name = "aaaaadpj"
+    patient_name = "aaaaaalq"
+    patient_folder = Path(__file__).parent / patient_name
     
     if not patient_folder.exists():
         print(f"❌ Patient folder not found: {patient_folder}")

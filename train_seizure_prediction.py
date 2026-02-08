@@ -169,53 +169,79 @@ def load_eeg_session(edf_path, csv_path, segment_duration, prediction_horizon, s
 
 
 def load_all_sessions(data_dir, segment_duration, prediction_horizon, sampling_rate):
-    """Load all EEG sessions from aaaaadpj patient."""
+    """Load all EEG sessions from patient by auto-detecting session folders and file pairs."""
     data_dir = Path(data_dir)
     all_segments = []
     
-    print("Loading EEG sessions...")
+    print("Scanning for EEG sessions...")
     
-    # First pass: determine maximum channel count
+    # Find all session directories that start with 's'
+    session_dirs = sorted([d for d in data_dir.iterdir() if d.is_dir() and d.name.startswith('s')])
+    print(f"Found {len(session_dirs)} session directories: {[d.name for d in session_dirs]}\n")
+    
+    # First pass: find all EDF/CSV pairs and determine maximum channel count
     max_channels = 0
     session_files = []
     
-    # s003_2006
-    session_dir = data_dir / "s003_2006" / "02_tcp_le"
-    edf_path = session_dir / "aaaaadpj_s003_t000.edf"
-    csv_path = session_dir / "aaaaadpj_s003_t000.csv"
-    if edf_path.exists() and csv_path.exists():
-        session_files.append((edf_path, csv_path))
-        raw = mne.io.read_raw_edf(str(edf_path), preload=False, verbose=False)
-        max_channels = max(max_channels, len(raw.ch_names))
+    for session_dir in session_dirs:
+        # Look for subdirectories containing 'tcp'
+        tcp_dirs = [d for d in session_dir.iterdir() if d.is_dir() and 'tcp' in d.name.lower()]
+        
+        for tcp_dir in tcp_dirs:
+            # Find all EDF files in this directory
+            edf_files = sorted(tcp_dir.glob("*.edf"))
+            
+            for edf_path in edf_files:
+                # Look for matching CSV file (same name, different extension)
+                csv_path = edf_path.with_suffix('.csv')
+                
+                if csv_path.exists():
+                    session_files.append((edf_path, csv_path))
+                    print(f"Found pair: {edf_path.parent.parent.name}/{edf_path.parent.name}/{edf_path.name}")
+                    
+                    # Check channel count
+                    raw = mne.io.read_raw_edf(str(edf_path), preload=False, verbose=False)
+                    max_channels = max(max_channels, len(raw.ch_names))
+                else:
+                    print(f"Warning: EDF file without matching CSV: {edf_path}")
     
-    # s005_2006 (t000 to t005)
-    session_dir = data_dir / "s005_2006" / "03_tcp_ar_a"
-    for i in range(6):
-        edf_path = session_dir / f"aaaaadpj_s005_t00{i}.edf"
-        csv_path = session_dir / f"aaaaadpj_s005_t00{i}.csv"
-        if edf_path.exists() and csv_path.exists():
-            session_files.append((edf_path, csv_path))
-            raw = mne.io.read_raw_edf(str(edf_path), preload=False, verbose=False)
-            max_channels = max(max_channels, len(raw.ch_names))
-    
-    print(f"Maximum channel count across sessions: {max_channels}")
-    print(f"All segments will be standardized to {max_channels} channels\n")
-    
-    # Second pass: load with standardized channel count
-    for edf_path, csv_path in session_files:
-        segments = load_eeg_session(edf_path, csv_path, segment_duration, prediction_horizon, sampling_rate, target_channels=max_channels)
-        all_segments.extend(segments)
-    
-    # Compute class distribution
-    pos = sum(1 for _, label in all_segments if label == 1)
-    neg = len(all_segments) - pos
     print(f"\n{'='*60}")
-    print(f"Total segments: {len(all_segments)}")
-    print(f"Positive (seizure): {pos} ({100*pos/len(all_segments):.1f}%)")
-    print(f"Negative (no seizure): {neg} ({100*neg/len(all_segments):.1f}%)")
+    print(f"Total EDF/CSV pairs found: {len(session_files)}")
+    print(f"Maximum channel count across sessions: {max_channels}")
+    print(f"All segments will be standardized to {max_channels} channels")
     print(f"{'='*60}\n")
     
+    # Second pass: load all sessions with standardized channel count
+    for idx, (edf_path, csv_path) in enumerate(session_files, 1):
+        print(f"Loading session {idx}/{len(session_files)}: {edf_path.name}")
+        segments = load_eeg_session(
+            edf_path, 
+            csv_path, 
+            segment_duration, 
+            prediction_horizon, 
+            sampling_rate, 
+            target_channels=max_channels
+        )
+        all_segments.extend(segments)
+        print(f"  → Added {len(segments)} segments\n")
+    
+    # Compute class distribution
+    if all_segments:
+        pos = sum(1 for _, label in all_segments if label == 1)
+        neg = len(all_segments) - pos
+        print(f"\n{'='*60}")
+        print(f"FINAL DATASET STATISTICS")
+        print(f"{'='*60}")
+        print(f"Total segments: {len(all_segments)}")
+        print(f"Positive (seizure): {pos} ({100*pos/len(all_segments):.1f}%)")
+        print(f"Negative (no seizure): {neg} ({100*neg/len(all_segments):.1f}%)")
+        print(f"{'='*60}\n")
+    else:
+        print("Warning: No segments loaded!")
+        pos, neg = 0, 0
+    
     return all_segments, pos, neg
+
 
 
 # ---------------- Normalization ----------------
