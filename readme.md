@@ -70,10 +70,6 @@ This project implements two complementary transformer-based models for EEG analy
 - **Positive**: 22 (13.3%) - segments preceding seizures
 - **Negative**: 143 (86.7%) - normal EEG
 
-**Fine-tuning Results**:
-
-![Fine-tuning Progress](results/fine-tuning.png)
-
 *Training and validation metrics showing model learning*
 
 **Final Performance (Step 5000)**:
@@ -88,10 +84,6 @@ Validation Metrics:
 ```
 
 ### 3. Seizure Prediction Results
-
-**Test File**: aaaaadpj_s005_t000.edf (521 seconds, 1 seizure at 370-519s)
-
-![Predictions](results/predictions_s005_t000.png)
 
 *Top: Binary predictions (red=seizure, green=normal) with orange ground truth overlay*
 *Bottom: Continuous seizure probability with 0.5 decision threshold*
