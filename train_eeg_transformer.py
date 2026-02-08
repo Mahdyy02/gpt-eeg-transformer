@@ -22,23 +22,23 @@ Full corrected EEG transformer training script implementing:
 """
 
 # ---------------- Hyperparameters (OPTIMIZED FOR MEMORY) ----------------
-batch_size = 16                   # Reduced from 64
-accumulation_steps = 8            # Increased to maintain effective batch size
-block_size = 512                  # Reduced from 2048
-checkpoint_path = "eeg_transformer_memory_opt.pth"
+batch_size = 16                   
+accumulation_steps = 8            
+block_size = 512                  
+checkpoint_path = "eeg_transformer.pth"
 max_iters = 5000
 eval_interval = 1000
 learning_rate = 3e-4
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-eval_iters = 20                   # Reduced from 50
-n_embd = 128                      # Reduced from 256
-n_head = 4                        # Reduced from 8
-n_layer = 4                       # Reduced from 6
+eval_iters = 20                   
+n_embd = 128                      
+n_head = 4                        
+n_layer = 4                       
 dropout = 0.2
-quantization_levels = 512         # Reduced from 1024
+quantization_levels = 512         
 mse_weight = 0.1
-max_samples = 1_000_000           # Reduced from 2M
-use_gradient_checkpointing = True # Enable gradient checkpointing
+max_samples = 1_000_000           
+use_gradient_checkpointing = True
 # -------------------------------------------------
 
 print(f"Device: {device}")
