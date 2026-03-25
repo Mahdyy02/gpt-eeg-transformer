@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Learning the Language of the Brain</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--black:#0a0a0a;--white:#ffffff;--gray:#777;--light:#f0f0f0;--mid:#ddd}
+
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--black);overflow:hidden;height:100vh;width:100vw}
+
+/* ══════════════════════════════════════
+   SLIDES
+══════════════════════════════════════ */
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:5vh 8vw;
+  opacity:0;pointer-events:none;
+  transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1);
+  transform:translateY(28px);
+}
+.slide.active{opacity:1;pointer-events:all;transform:translateY(0)}
+
+/* ══════════════════════════════════════
+   TYPOGRAPHY, scaled up significantly
+══════════════════════════════════════ */
+.display{font-family:'DM Serif Display',serif;font-size:clamp(52px,7vw,96px);line-height:1.08;letter-spacing:-2px;margin-bottom:3vh;font-weight:400}
+.display em{font-style:italic}
+.heading{font-family:'DM Serif Display',serif;font-size:clamp(36px,4.8vw,66px);font-weight:400;line-height:1.12;letter-spacing:-.8px;margin-bottom:2.5vh;text-align:center}
+.body-text{font-size:clamp(18px,2.1vw,28px);line-height:1.65;color:#333;max-width:78vw;font-weight:400}
+.meta{font-size:clamp(15px,1.4vw,20px);color:var(--gray);letter-spacing:.04em;margin-top:1vh}
+.label{font-size:clamp(11px,.9vw,14px);letter-spacing:.2em;text-transform:uppercase;color:var(--gray);font-weight:600;margin-bottom:1.5vh}
+.caption{font-size:clamp(15px,1.5vw,20px);color:var(--gray);margin-top:1.5vh;text-align:center;line-height:1.6;max-width:72vw}
+.pill{display:inline-block;font-size:clamp(13px,1.1vw,17px);border:1px solid #ddd;border-radius:100px;padding:8px 20px;color:#555;margin:5px}
+.step-desc{font-size:clamp(16px,1.7vw,22px);color:#444;margin-top:1.5vh;min-height:2em;text-align:center;transition:opacity .3s ease;max-width:72vw}
+
+/* ══════════════════════════════════════
+   STAGGER (for motivation slides)
+══════════════════════════════════════ */
+.stagger>*{opacity:0;transform:translateY(20px)}
+.slide.active .stagger>*:nth-child(1){animation:up .55s .1s forwards cubic-bezier(.4,0,.2,1)}
+.slide.active .stagger>*:nth-child(2){animation:up .55s .25s forwards cubic-bezier(.4,0,.2,1)}
+.slide.active .stagger>*:nth-child(3){animation:up .55s .4s forwards cubic-bezier(.4,0,.2,1)}
+.slide.active .stagger>*:nth-child(4){animation:up .55s .55s forwards cubic-bezier(.4,0,.2,1)}
+.slide.active .stagger>*:nth-child(5){animation:up .55s .7s forwards cubic-bezier(.4,0,.2,1)}
+.slide.active .stagger>*:nth-child(6){animation:up .55s .85s forwards cubic-bezier(.4,0,.2,1)}
+@keyframes up{to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════
+   FADE HELPER (for pipeline slides)
+══════════════════════════════════════ */
+.fade-item{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.fade-item.show{opacity:1;transform:translateY(0)}
+
+/* ══════════════════════════════════════
+   PROGRESS + COUNTER + HINT
+══════════════════════════════════════ */
+.progress{position:fixed;bottom:0;left:0;height:3px;background:var(--black);width:0%;transition:width .5s cubic-bezier(.4,0,.2,1);z-index:100}
+.counter{position:fixed;bottom:22px;right:32px;font-size:13px;color:#bbb;letter-spacing:.1em;z-index:100;font-weight:500}
+.step-hint{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);font-size:13px;color:#ccc;letter-spacing:.08em;z-index:100}
+
+/* ══════════════════════════════════════
+   DIVIDER
+══════════════════════════════════════ */
+.divider{width:48px;height:1px;background:#ddd;margin:2.5vh auto}
+
+/* ──────────────────────────────────────
+   SLIDE 1, brain wave SVG
+────────────────────────────────────── */
+.brain-wave{width:min(420px,70vw);height:100px;margin:0 auto 3vh;opacity:0}
+.slide.active .brain-wave{animation:up .7s .05s forwards cubic-bezier(.4,0,.2,1)}
+.brain-wave path{stroke-dasharray:600;stroke-dashoffset:600}
+.slide.active .brain-wave path{animation:drawLine 1.4s .3s forwards cubic-bezier(.4,0,.2,1)}
+@keyframes drawLine{to{stroke-dashoffset:0}}
+
+/* ──────────────────────────────────────
+   SLIDE 2, transformer cards
+────────────────────────────────────── */
+.cards-row{display:flex;gap:clamp(12px,2vw,24px);margin:3vh 0 1.5vh;justify-content:center;flex-wrap:wrap}
+.card{border:1px solid #e8e8e8;border-radius:16px;padding:clamp(18px,2.5vh,32px) clamp(20px,3vw,40px);min-width:clamp(140px,16vw,200px);text-align:center;background:#fff;transition:box-shadow .3s}
+.card:hover{box-shadow:0 6px 28px rgba(0,0,0,.09)}
+.card-icon{font-size:clamp(28px,3.5vw,44px);margin-bottom:1.2vh}
+.card-label{font-size:clamp(15px,1.4vw,19px);color:#333;font-weight:500}
+.card-sub{font-size:clamp(12px,1vw,15px);color:var(--gray);margin-top:.6vh}
+
+/* ──────────────────────────────────────
+   SLIDE 3, sequence illustration
+────────────────────────────────────── */
+.seq-row{display:flex;align-items:center;gap:0;margin:1.8vh 0;font-size:clamp(14px,1.3vw,18px)}
+.seq-token{border:1px solid #ddd;border-radius:8px;padding:clamp(8px,1.2vh,14px) clamp(12px,1.5vw,20px);margin:0 4px;font-size:clamp(14px,1.3vw,18px);color:var(--black);background:#fafafa;letter-spacing:.02em}
+.seq-arrow{color:#bbb;margin:0 10px;font-size:clamp(18px,2vw,24px)}
+.seq-group{display:flex;flex-direction:column;gap:clamp(10px,1.5vh,18px)}
+.seq-line-label{font-size:clamp(11px,.85vw,13px);letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-right:16px;width:52px;text-align:right;flex-shrink:0;margin-right:50px;}
+
+/* ──────────────────────────────────────
+   SLIDE 4, EEG brain diagram
+────────────────────────────────────── */
+.eeg-diagram{display:flex;align-items:center;gap:clamp(28px,5vw,60px);margin:2.5vh 0;justify-content:center}
+.brain-icon{width:clamp(80px,9vw,120px);height:clamp(80px,9vw,120px);flex-shrink:0}
+.eeg-lines{display:flex;flex-direction:column;gap:clamp(8px,1.2vh,14px)}
+.eeg-line-wrap{display:flex;align-items:center;gap:14px}
+.eeg-ch{font-size:clamp(11px,.9vw,14px);color:var(--gray);width:32px;text-align:right;letter-spacing:.05em}
+
+/* ──────────────────────────────────────
+   SLIDE 5, analogy bridge
+────────────────────────────────────── */
+.analogy-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:0 clamp(16px,3vw,36px);align-items:center;margin:3vh 0;max-width:min(800px,88vw);width:100%}
+.analogy-box{border:1px solid #e8e8e8;border-radius:18px;padding:clamp(20px,3vh,36px) clamp(20px,3vw,36px);text-align:center}
+.analogy-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,2.2vw,30px);margin-bottom:1vh}
+.analogy-desc{font-size:clamp(14px,1.2vw,18px);color:var(--gray);line-height:1.55}
+.analogy-bridge{text-align:center;color:#bbb;font-size:clamp(30px,4vw,48px)}
+.analogy-bridge .bridge-label{display:block;font-size:clamp(10px,.8vw,13px);letter-spacing:.14em;text-transform:uppercase;color:#ccc;margin-top:.8vh}
+
+/* ──────────────────────────────────────
+   SLIDE 6, BRIDGE / TRANSITION
+────────────────────────────────────── */
+#slideBridge{background:var(--white)}
+.bridge-content{display:flex;flex-direction:column;align-items:center;gap:0}
+.bridge-question{font-family:'DM Serif Display',serif;font-size:clamp(28px,3.8vw,52px);font-weight:400;line-height:1.25;max-width:min(800px,88vw);opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.bridge-question.show{opacity:1;transform:translateY(0)}
+.bridge-steps{display:flex;gap:0;align-items:center;margin:4vh 0;flex-wrap:wrap;justify-content:center}
+.bstep{display:flex;flex-direction:column;align-items:center;gap:1vh;opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.bstep.show{opacity:1;transform:translateY(0)}
+.bstep-num{width:clamp(36px,4vw,50px);height:clamp(36px,4vw,50px);border-radius:50%;border:2px solid var(--black);display:flex;align-items:center;justify-content:center;font-size:clamp(13px,1.2vw,17px);font-weight:600;flex-shrink:0}
+.bstep-label{font-size:clamp(14px,1.3vw,18px);color:#333;font-weight:500;white-space:nowrap}
+.bstep-sub{font-size:clamp(11px,.9vw,14px);color:var(--gray);white-space:nowrap}
+.bstep-arrow{color:#ccc;font-size:clamp(22px,2.5vw,30px);margin:0 clamp(8px,1.5vw,18px);padding-bottom:28px;opacity:0;transition:opacity .4s ease}
+.bstep-arrow.show{opacity:1}
+.bridge-tagline{font-size:clamp(16px,1.5vw,21px);color:var(--gray);opacity:0;transition:opacity .6s .2s ease;max-width:min(620px,80vw);line-height:1.65}
+.bridge-tagline.show{opacity:1}
+
+/* ──────────────────────────────────────
+   PIPELINE SLIDES, sampling canvas
+────────────────────────────────────── */
+#slidePA .canvas-wrap{position:relative;width:min(880px,92vw);height:clamp(130px,20vh,200px);margin:2vh 0 1.5vh}
+#slidePA canvas{position:absolute;inset:0}
+.sample-dot{position:absolute;width:13px;height:13px;border-radius:50%;background:var(--black);transform:translate(-50%,-50%);opacity:0;transition:opacity .3s ease}
+.sample-dot.show{opacity:1}
+.sample-line{position:absolute;bottom:0;width:2px;background:#bbb;transform:translateX(-50%);height:0;transition:height .3s ease}
+.sample-line.show{height:var(--h)}
+
+/* ──────────────────────────────────────
+   PIPELINE SLIDES, quantization
+────────────────────────────────────── */
+#slidePB .quant-wrap{width:min(800px,90vw);height:clamp(160px,24vh,240px);position:relative;margin:2vh 0 1vh}
+.q-level{position:absolute;left:0;right:0;height:1px;background:#e8e8e8;display:flex;align-items:center}
+.q-level span{font-size:clamp(10px,.75vw,13px);color:#ccc;margin-left:6px;line-height:0}
+.q-bar{position:absolute;bottom:0;border-radius:4px 4px 0 0;background:var(--black);opacity:0;transition:opacity .35s ease,height .5s cubic-bezier(.4,0,.2,1)}
+.q-bar.show{opacity:1}
+.q-arrow{position:absolute;opacity:0;transition:opacity .4s ease;font-size:clamp(11px,.85vw,14px);color:var(--gray);white-space:nowrap;transform:translateX(-50%)}
+.q-arrow.show{opacity:1}
+
+/* ──────────────────────────────────────
+   PIPELINE SLIDES, tokenization
+────────────────────────────────────── */
+#slidePC .token-flow{display:flex;align-items:flex-start;gap:clamp(18px,3vw,40px);margin:2.5vh 0;flex-wrap:wrap;justify-content:center}
+.token-col{display:flex;flex-direction:column;align-items:center;gap:clamp(5px,.8vh,9px)}
+.token-col .col-label{font-size:clamp(10px,.8vw,13px);letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
+.token-box{border:1px solid var(--mid);border-radius:10px;padding:clamp(8px,1.2vh,14px) clamp(12px,1.8vw,22px);font-size:clamp(14px,1.3vw,18px);font-weight:500;background:#fff;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease,border-color .3s,background .3s}
+.token-box.show{opacity:1;transform:translateY(0)}
+.token-box.highlight{border-color:var(--black);background:var(--black);color:#fff}
+.arrow-col{display:flex;align-items:center;font-size:clamp(22px,2.5vw,32px);color:#ccc;padding-top:42px;opacity:0;transition:opacity .4s ease}
+.arrow-col.show{opacity:1}
+
+/* ──────────────────────────────────────
+   SLIDE GPT, result of pretraining
+────────────────────────────────────── */
+.gpt-box{border:2px solid var(--black);border-radius:20px;padding:clamp(20px,3vh,36px) clamp(28px,4vw,56px);margin:2.5vh 0 1.5vh;max-width:min(680px,86vw);width:100%;position:relative}
+.gpt-box-label{position:absolute;top:-12px;left:28px;background:#fff;padding:0 10px;font-size:clamp(10px,.78vw,13px);letter-spacing:.16em;text-transform:uppercase;color:var(--gray)}
+.gpt-title{font-family:'DM Serif Display',serif;font-size:clamp(28px,3.5vw,46px);margin-bottom:.8vh}
+.gpt-sub{font-size:clamp(14px,1.2vw,18px);color:var(--gray);line-height:1.55}
+.gpt-skills{display:flex;gap:10px;justify-content:center;margin-top:1.8vh;flex-wrap:wrap}
+.gpt-skill{font-size:clamp(12px,1vw,16px);border:1px solid #e0e0e0;border-radius:100px;padding:7px 18px;color:#444}
+.gpt-fluent{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.2vw,30px);margin:1.5vh 0 .6vh;opacity:0;transition:opacity .6s ease}
+.gpt-fluent.show{opacity:1}
+.gpt-wave-row{display:flex;align-items:center;gap:14px;margin:1.5vh 0;opacity:0;transition:opacity .5s ease}
+.gpt-wave-row.show{opacity:1}
+.gpt-wave-label{font-size:clamp(11px,.85vw,14px);letter-spacing:.1em;text-transform:uppercase;color:var(--gray);width:68px;text-align:right;flex-shrink:0;margin-right:50px;}
+
+/* ──────────────────────────────────────
+   SLIDE BERT, sentiment analogy
+────────────────────────────────────── */
+.analogy-demo{display:flex;flex-direction:column;gap:clamp(12px,2vh,20px);margin:2.5vh 0;width:100%;max-width:min(780px,90vw)}
+.demo-row{display:flex;align-items:center;gap:16px;opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease}
+.demo-row.show{opacity:1;transform:translateY(0)}
+.demo-input{border:1px solid #e0e0e0;border-radius:12px;padding:clamp(10px,1.5vh,18px) clamp(14px,2vw,24px);font-size:clamp(14px,1.3vw,18px);color:#333;background:#fafafa;flex:1;text-align:left;line-height:1.5}
+.demo-arrow-mid{color:#bbb;font-size:clamp(20px,2.2vw,28px);flex-shrink:0}
+.demo-output{border:2px solid var(--black);border-radius:12px;padding:clamp(10px,1.5vh,18px) clamp(18px,2.5vw,30px);font-size:clamp(14px,1.3vw,18px);font-weight:600;white-space:nowrap;flex-shrink:0;min-width:clamp(110px,13vw,160px);text-align:center}
+.demo-output.pos{border-color:#2a2a2a;background:var(--black);color:#fff}
+.demo-output.neg{border-color:#888;background:#888;color:#fff}
+.demo-output.neu{border-color:#ccc;background:#fafafa;color:#555}
+.bert-note{font-size:clamp(14px,1.25vw,18px);color:var(--gray);opacity:0;transition:opacity .5s .1s ease;line-height:1.6;max-width:min(800px,86vw)}
+.bert-note.show{opacity:1}
+
+/* ──────────────────────────────────────
+   SLIDE FINETUNE, seizure prediction
+────────────────────────────────────── */
+.ft-pipeline{display:flex;align-items:center;gap:0;justify-content:center;margin:2.5vh 0;flex-wrap:wrap}
+.ft-block{border:1px solid var(--mid);border-radius:16px;padding:clamp(14px,2.2vh,28px) clamp(16px,2.5vw,32px);text-align:center;min-width:clamp(120px,14vw,170px);opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease}
+.ft-block.show{opacity:1;transform:translateY(0)}
+.ft-block.highlight{border-color:var(--black);background:var(--black);color:#fff}
+.ft-block.highlight .ft-sub{color:#aaa}
+.ft-title-sm{font-family:'DM Serif Display',serif;font-size:clamp(16px,1.6vw,22px);margin-bottom:.6vh}
+.ft-sub{font-size:clamp(11px,.9vw,14px);color:var(--gray);letter-spacing:.04em}
+.ft-arrow{color:#ccc;font-size:clamp(22px,2.5vw,32px);margin:0 clamp(6px,1vw,14px);padding-bottom:14px;opacity:0;transition:opacity .4s ease}
+.ft-arrow.show{opacity:1}
+.ft-question{font-family:'DM Serif Display',serif;font-size:clamp(20px,2.8vw,36px);margin:2vh 0 1vh;opacity:0;transition:opacity .5s ease;font-style:italic}
+.ft-question.show{opacity:1}
+.ft-answers{display:flex;gap:clamp(10px,2vw,20px);justify-content:center;margin:1vh 0;flex-wrap:wrap}
+.ft-ans{border:2px solid var(--black);border-radius:12px;padding:clamp(10px,1.5vh,16px) clamp(20px,3vw,36px);font-size:clamp(15px,1.4vw,20px);font-weight:600;opacity:0;transition:opacity .5s ease}
+.ft-ans.show{opacity:1}
+.ft-ans.yes{background:var(--black);color:#fff}
+.ft-ans.no{background:#fff;color:var(--black)}
+.ft-note{font-size:clamp(14px,1.25vw,18px);color:var(--gray);opacity:0;transition:opacity .5s .15s ease;max-width:min(680px,86vw);line-height:1.65;margin-top:1vh}
+.ft-note.show{opacity:1}
+
+/* ──────────────────────────────────────
+   PIPELINE SLIDES, SSL training
+────────────────────────────────────── */
+#slidePD .ssl-wrap{width:min(880px,92vw);position:relative;margin:2vh 0}
+.tok-seq{display:flex;gap:clamp(5px,.8vw,10px);align-items:center;justify-content:center;margin:1.2vh 0;flex-wrap:wrap}
+.tok{border:1px solid var(--mid);border-radius:9px;padding:clamp(7px,1.2vh,13px) clamp(10px,1.5vw,18px);font-size:clamp(13px,1.2vw,18px);font-weight:500;min-width:clamp(40px,4.5vw,58px);text-align:center;transition:all .35s ease;opacity:0;transform:translateY(6px)}
+.tok.show{opacity:1;transform:translateY(0)}
+.tok.context{background:#fafafa;border-color:#e0e0e0}
+.tok.masked{background:var(--black);color:#fff;border-color:var(--black)}
+.tok.predicted{background:var(--black);color:#fff;border-color:var(--black)}
+.loss-box{border:1px solid var(--mid);border-radius:16px;padding:clamp(14px,2.2vh,26px) clamp(24px,4vw,48px);text-align:center;opacity:0;transition:opacity .5s ease;margin:1.5vh auto;max-width:min(520px,80vw)}
+.loss-box.show{opacity:1}
+.loss-title{font-size:clamp(11px,.85vw,14px);letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-bottom:.8vh}
+.loss-eq{font-size:clamp(20px,2.5vw,32px);font-family:'DM Serif Display',serif}
+.ssl-note{font-size:clamp(14px,1.2vw,18px);color:var(--gray);margin-top:1vh;opacity:0;transition:opacity .5s .2s ease}
+.ssl-note.show{opacity:1}
+.arrow-right{color:#bbb;font-size:clamp(20px,2.2vw,28px);opacity:0;transition:opacity .3s ease}
+.arrow-right.show{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="counter" id="counter"></div>
+<div class="step-hint" id="stepHint">Space or → to advance</div>
+
+<!-- ══════════════════════════════════════════════════════
+     PART 1, MOTIVATION (slides 0–4)
+══════════════════════════════════════════════════════ -->
+
+<!-- SLIDE 0, Title -->
+<section class="slide active" id="slide0">
+  <svg class="brain-wave" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 40 L20 40 L30 15 L40 65 L50 25 L60 55 L70 35 L80 48 L95 40 L110 40 L120 10 L130 70 L140 20 L150 60 L160 38 L175 42 L190 40 L200 25 L210 55 L220 30 L230 50 L240 40 L260 40 L280 40"
+      stroke="#0a0a0a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="stagger">
+    <div class="label">Epilepsy Research · Machine Learning</div>
+    <h1 class="display">Learning the<br><em>Language of the Brain</em></h1>
+    <div class="divider"></div>
+    <p class="meta"><strong>Epileptic Seizure Prediction Using Patient-Adaptive Transformer Networks</strong></p>
+    <p class="meta">Mohamed MAHDI - Asma BAGHDADI</p>
+  </div>
+</section>
+
+<!-- SLIDE 1, Transformers -->
+<section class="slide" id="slide1">
+  <div class="stagger">
+    <div class="label">Context</div>
+    <h2 class="heading">Transformers changed<br>language processing</h2>
+    <div class="cards-row">
+      <div class="card"><div class="card-icon">🌐</div><div class="card-label">Translation</div><div class="card-sub">Seq → Seq</div></div>
+      <div class="card"><div class="card-icon">💬</div><div class="card-label">Chatbots</div><div class="card-sub">Context-aware</div></div>
+      <div class="card"><div class="card-icon">🧠</div><div class="card-label">Reasoning</div><div class="card-sub">Long-range deps</div></div>
+    </div>
+    <p class="body-text" style="margin-top:16px;color:var(--gray);font-size:16px">The secret? Transformers learn <strong style="color:var(--black)">long-range dependencies</strong> across any sequence (not just text).</p>
+  </div>
+</section>
+
+<!-- SLIDE 2, What is a sequence -->
+<section class="slide" id="slide2">
+  <div class="stagger">
+    <div class="label">Core Idea</div>
+    <h2 class="heading">What is a sequence?</h2>
+    <div class="seq-group">
+      <div class="seq-row" style="justify-content:center">
+        <span class="seq-line-label">Text</span>
+        <span class="seq-token">The</span><span class="seq-token">cat</span><span class="seq-token">sat</span><span class="seq-token">down</span>
+        <span class="seq-arrow">→ meaning</span>
+      </div>
+      <div class="seq-row" style="justify-content:center">
+        <span class="seq-line-label">Audio</span>
+        <span class="seq-token">0.2</span><span class="seq-token">−0.4</span><span class="seq-token">0.8</span><span class="seq-token">0.1</span>
+        <span class="seq-arrow">→ speech</span>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <p class="body-text" style="font-size:17px">Any stream of values ordered in time is a sequence.<br>Transformers find <strong>patterns</strong> within it, regardless of domain.</p>
+  </div>
+</section>
+
+<!-- SLIDE 3, EEG signals -->
+<section class="slide" id="slide3">
+  <div class="stagger">
+    <div class="label">EEG Signals</div>
+    <h2 class="heading">The brain communicates<br>through signals</h2>
+    <div class="eeg-diagram">
+      <svg class="brain-icon" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="45" cy="48" rx="30" ry="26" stroke="#0a0a0a" stroke-width="1.5" fill="#fafafa"/>
+        <path d="M22 42 Q28 32 36 38 Q40 28 48 35 Q54 24 62 34 Q70 38 68 48" stroke="#0a0a0a" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        <path d="M30 52 Q36 56 44 53 Q50 58 58 52" stroke="#0a0a0a" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        <line x1="45" y1="74" x2="45" y2="84" stroke="#bbb" stroke-width="1.2"/>
+        <circle cx="45" cy="86" r="3" fill="#0a0a0a"/>
+        <text x="45" y="15" text-anchor="middle" font-size="9" fill="#999" font-family="DM Sans,sans-serif" letter-spacing="1">NEURONS</text>
+      </svg>
+      <div class="eeg-lines">
+        <div class="eeg-line-wrap"><span class="eeg-ch">Fp1</span><svg width="200" height="22" viewBox="0 0 200 22"><polyline points="0,11 12,11 20,4 28,18 36,7 44,15 52,10 62,12 72,11 82,3 90,19 98,8 108,14 118,10 130,11 140,6 150,16 160,11 175,11 200,11" fill="none" stroke="#0a0a0a" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+        <div class="eeg-line-wrap"><span class="eeg-ch">C3</span><svg width="200" height="22" viewBox="0 0 200 22"><polyline points="0,11 15,11 24,16 33,5 42,13 50,9 60,11 70,17 80,4 90,12 100,11 110,8 122,15 133,7 144,11 156,14 165,8 175,11 200,11" fill="none" stroke="#555" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+        <div class="eeg-line-wrap"><span class="eeg-ch">O1</span><svg width="200" height="22" viewBox="0 0 200 22"><polyline points="0,11 10,11 18,9 26,13 35,6 44,17 52,10 64,11 74,5 82,17 92,11 102,14 113,8 124,12 135,11 146,7 155,15 166,11 180,11 200,11" fill="none" stroke="#aaa" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+    <p class="body-text" style="font-size:17px">Each EEG channel is a <strong>temporal sequence</strong>, just like a sentence.<br>Rhythms and patterns encode brain state.</p>
+  </div>
+</section>
+
+<!-- SLIDE 4, Hypothesis -->
+<section class="slide" id="slide4">
+  <div class="stagger">
+    <div class="label">Hypothesis</div>
+    <h2 class="heading">If it's a sequence,<br>a transformer can learn it</h2>
+    <div class="analogy-grid">
+      <div class="analogy-box">
+        <div class="analogy-title">Language</div>
+        <div class="analogy-desc">Words over time<br>→ meaning &amp; intent</div>
+        <div style="margin-top:12px"><span class="pill">Tokens</span><span class="pill">Attention</span></div>
+      </div>
+      <div class="analogy-bridge">≈<span class="bridge-label">same model</span></div>
+      <div class="analogy-box">
+        <div class="analogy-title">Brain</div>
+        <div class="analogy-desc">Voltages over time<br>→ seizure prediction</div>
+        <div style="margin-top:12px"><span class="pill">EEG</span><span class="pill">Patterns</span></div>
+      </div>
+    </div>
+    <p class="body-text" style="font-size:16px;color:var(--gray)">Brain activity is another <strong style="color:var(--black)">language</strong>, and transformers<br>might be fluent in it.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     BRIDGE, slide 5
+══════════════════════════════════════════════════════ -->
+<section class="slide" id="slideBridge">
+  <div class="bridge-content">
+    <div class="label" style="opacity:0;transition:opacity .5s .05s ease" id="bridgeLabel">The Method</div>
+    <p class="bridge-question" id="bq1">But how do we actually feed<br>a brain signal into a transformer?</p>
+    <div class="bridge-steps" id="bridgeSteps">
+      <div class="bstep" id="bs1">
+        <div class="bstep-num">1</div>
+        <div class="bstep-label">Sample</div>
+        <div class="bstep-sub">250 Hz</div>
+      </div>
+      <div class="bstep-arrow" id="ba1">→</div>
+      <div class="bstep" id="bs2">
+        <div class="bstep-num">2</div>
+        <div class="bstep-label">Quantize</div>
+        <div class="bstep-sub">512 levels</div>
+      </div>
+      <div class="bstep-arrow" id="ba2">→</div>
+      <div class="bstep" id="bs3">
+        <div class="bstep-num">3</div>
+        <div class="bstep-label">Tokenize</div>
+        <div class="bstep-sub">integer sequence</div>
+      </div>
+      <div class="bstep-arrow" id="ba3">→</div>
+      <div class="bstep" id="bs4">
+        <div class="bstep-num">4</div>
+        <div class="bstep-label">Pretrain</div>
+        <div class="bstep-sub">self-supervised</div>
+      </div>
+    </div>
+    <p class="bridge-tagline" id="bridgeTagline">Let's walk through each step.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     PART 2, PIPELINE (slides 7–10)
+══════════════════════════════════════════════════════ -->
+
+<!-- SLIDE PA, Raw Signal -->
+<section class="slide" id="slidePA">
+  <div class="label">Step 1, Acquisition</div>
+  <h2 class="heading">A raw EEG signal is a continuous waveform</h2>
+  <div class="canvas-wrap" id="canvasWrap">
+    <canvas id="waveCanvas" width="880" height="200"></canvas>
+  </div>
+  <p class="step-desc" id="aDesc">The brain generates continuous electrical voltage over time.</p>
+  <p class="caption fade-item" id="aCap">To feed into a model, we must <strong>discretize</strong> it, take samples at regular intervals (250 Hz = 250 samples per second).</p>
+</section>
+
+<!-- SLIDE PB, Quantization -->
+<section class="slide" id="slidePB">
+  <div class="label">Step 2, Quantization</div>
+  <h2 class="heading">Each sample is mapped to a discrete level</h2>
+  <div class="quant-wrap" id="quantWrap"></div>
+  <p class="step-desc" id="bDesc">Raw amplitudes are continuous, we need integers.</p>
+  <p class="caption fade-item" id="bCap">We normalize amplitudes with z-score, then divide the range into <strong>L = 512 discrete bins</strong>. Each sample gets a number 0–511.</p>
+</section>
+
+<!-- SLIDE PC, Tokenization -->
+<section class="slide" id="slidePC">
+  <div class="label">Step 3, Tokenization</div>
+  <h2 class="heading">Quantized levels become tokens, just like words</h2>
+  <div class="token-flow" id="tokenFlow"></div>
+  <p class="step-desc" id="cDesc">Each bin number is a token in a vocabulary of 512.</p>
+  <p class="caption fade-item" id="cCap">The full EEG channel becomes a <strong>sequence of integers</strong>, structurally identical to a sentence. The transformer reads it the same way.</p>
+</section>
+
+<!-- SLIDE PD, Self-supervised -->
+<section class="slide" id="slidePD">
+  <div class="label">Step 4, Self-Supervised Pretraining</div>
+  <h2 class="heading">The model learns to predict the next token</h2>
+  <div class="ssl-wrap">
+    <div class="tok-seq" id="sslSeq"></div>
+    <div class="tok-seq" id="sslPred" style="margin-top:4px"></div>
+  </div>
+  <div class="loss-box" id="lossBox">
+    <div class="loss-title">Training objective</div>
+    <div class="loss-eq">𝓛 = 𝓛<sub>CE</sub> + 0.1 · 𝓛<sub>MSE</sub></div>
+  </div>
+  <p class="ssl-note" id="sslNote">No seizure labels needed, the signal teaches itself.</p>
+  <p class="caption fade-item" id="dCap">After pretraining, the model has learned the <strong>grammar of brain signals</strong>: rhythms, waveform shapes, transitions. Fine-tuning then specializes it for seizure prediction.</p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     PART 3, FINE-TUNING (slides GPT, BERT, FT)
+══════════════════════════════════════════════════════ -->
+
+<!-- SLIDE GPT, the model speaks brain language -->
+<section class="slide" id="slideGPT">
+  <div class="label">Result of Pretraining</div>
+  <h2 class="heading">We now have a GPT<br>that speaks <em style="font-style:italic">brain language</em></h2>
+
+  <div class="gpt-box fade-item" id="gptBox">
+    <div class="gpt-box-label">Pretrained model</div>
+    <div class="gpt-title">EEG-GPT</div>
+    <div class="gpt-sub">Trained on raw EEG token sequences<br>without any labels</div>
+    <div class="gpt-skills">
+      <span class="gpt-skill">Waveform rhythms</span>
+      <span class="gpt-skill">Oscillatory patterns</span>
+      <span class="gpt-skill">Long-range dynamics</span>
+      <span class="gpt-skill">Brain state transitions</span>
+    </div>
+  </div>
+
+  <div class="gpt-wave-row" id="gptWaveRow">
+    <span class="gpt-wave-label">Understands</span>
+    <svg width="260" height="28" viewBox="0 0 260 28">
+      <polyline points="0,14 14,14 22,4 30,24 38,8 46,20 54,12 64,15 76,14 88,5 96,23 106,10 116,18 126,13 138,14 148,7 158,21 168,13 180,14 200,14 216,9 226,19 236,11 246,17 260,14"
+        fill="none" stroke="#0a0a0a" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>
+    <span style="font-size:13px;color:var(--gray)">fluently</span>
+  </div>
+
+  <p class="gpt-fluent" id="gptFluent">Just like GPT-2 learned English by predicting the next word,<br>our model learned the <strong>grammar of brain signals</strong>.</p>
+</section>
+
+<!-- SLIDE BERT, sentiment analogy -->
+<section class="slide" id="slideBERT">
+  <div class="label">The Fine-Tuning Idea</div>
+  <h2 class="heading">A language model can be asked<br>to answer questions about text</h2>
+
+  <div class="analogy-demo" id="bertDemo">
+    <div class="demo-row" id="dr1">
+      <div class="demo-input">
+        <span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#bbb;display:block;margin-bottom:4px">Input text</span>
+        "This product is absolutely fantastic, I love it!"
+      </div>
+      <div class="demo-arrow-mid">→</div>
+      <div class="demo-output pos">Positive 😊</div>
+    </div>
+    <div class="demo-row" id="dr2">
+      <div class="demo-input">"Terrible experience. Would not recommend to anyone."</div>
+      <div class="demo-arrow-mid">→</div>
+      <div class="demo-output neg">Negative 😞</div>
+    </div>
+    <div class="demo-row" id="dr3">
+      <div class="demo-input">"The package arrived on time."</div>
+      <div class="demo-arrow-mid">→</div>
+      <div class="demo-output neu">Neutral 😐</div>
+    </div>
+  </div>
+
+  <p class="bert-note" id="bertNote">
+    BERT and GPT models are <strong>pretrained</strong> on massive text, then <strong>fine-tuned</strong> on labeled examples<br> to answer specific questions. The same pretrained backbone, countless downstream tasks.
+  </p>
+</section>
+
+<!-- SLIDE FT, fine-tune for seizure -->
+<section class="slide" id="slideFT">
+  <div class="label">Our Fine-Tuning</div>
+  <h2 class="heading">We ask our EEG-GPT<br>the same kind of question</h2>
+
+  <div class="ft-pipeline" id="ftPipeline">
+    <div class="ft-block" id="ftb1">
+      <div class="ft-title-sm">EEG-GPT</div>
+      <div class="ft-sub">pretrained backbone</div>
+    </div>
+    <div class="ft-arrow" id="fta1">+</div>
+    <div class="ft-block" id="ftb2">
+      <div class="ft-title-sm">Labeled segments</div>
+      <div class="ft-sub">pre-ictal / normal</div>
+    </div>
+    <div class="ft-arrow" id="fta2">→</div>
+    <div class="ft-block highlight" id="ftb3">
+      <div class="ft-title-sm">Fine-tuned model</div>
+      <div class="ft-sub">seizure predictor</div>
+    </div>
+  </div>
+
+  <p class="ft-question" id="ftQ">"Will there be a seizure in the next 30 seconds?"</p>
+
+  <div class="ft-answers" id="ftAnswers">
+    <div class="ft-ans yes" id="ftYes">⚠ Yes, seizure incoming</div>
+    <div class="ft-ans no" id="ftNo">✓ No, brain is calm</div>
+  </div>
+
+  <p class="ft-note" id="ftNote">
+    The pretrained model already understands EEG dynamics.<br>
+    Fine-tuning teaches it to spot the subtle <strong>pre-ictal signature</strong>, up to 30 seconds early.
+  </p>
+</section>
+
+<!-- SLIDE PIPELINE, full architecture diagram -->
+<section class="slide" id="slidePipeline" style="padding:3vh 4vw">
+  <div class="label">Full Architecture</div>
+  <h2 class="heading" style="font-size:clamp(28px,3.5vw,48px);margin-bottom:1vh">The complete pipeline</h2>
+  <div id="pipelineWrap" style="width:100%;flex:1;display:flex;flex-direction:column;justify-content:center">
+    <svg id="pipelineSVG" width="100%" viewBox="0 0 1060 390">
+      <defs>
+        <marker id="parrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+      </defs>
+
+      <!-- ══════════════════════════════════════════
+           ROW 1, LINEAR FLOW  (y-centre = 90)
+           Layout: EEG(60) → gap → FFT(110) → Noise(200) → Filter(295) → Clean(385) → Z-score(475) → Quantize(575) → Tokenize(675)
+           All nodes: width=90 height=56 centred on their x
+      ══════════════════════════════════════════ -->
+
+      <!-- Dashed stage boxes -->
+      <rect id="pBox1" x="90" y="38" width="400" height="100" rx="12" fill="none" stroke="#bbb" stroke-width="1.2" stroke-dasharray="6 3" opacity="0"/>
+      <text id="pLbl1" x="240" y="30" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" letter-spacing="0.14em" fill="#999" opacity="0">PREPROCESSING</text>
+
+      <rect id="pBox2" x="495" y="38" width="372" height="100" rx="12" fill="none" stroke="#bbb" stroke-width="1.2" stroke-dasharray="6 3" opacity="0"/>
+      <text id="pLbl2" x="626" y="30" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" letter-spacing="0.14em" fill="#999" opacity="0">TOKENIZATION</text>
+
+      <!-- EEG Input ellipse  cx=46 cy=90 -->
+      <g id="pN0" opacity="0">
+        <ellipse cx="46" cy="90" rx="40" ry="30" fill="#FFF8F0" stroke="#E67E22" stroke-width="1.8"/>
+        <text font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#C0392B" text-anchor="middle" x="46" y="85">EEG</text>
+        <text font-family="DM Sans,sans-serif" font-size="11" fill="#C0392B" text-anchor="middle" x="46" y="100">Signal</text>
+      </g>
+
+      <!-- FFT/PSD  centre=140  rect x=95 w=90 -->
+      <g id="pN1" opacity="0">
+        <rect x="95" y="62" width="90" height="56" rx="10" fill="#E8F5E9" stroke="#27AE60" stroke-width="1.6"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#145A32" text-anchor="middle" x="140" y="86">FFT</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#1E8449" text-anchor="middle" x="140" y="104">PSD</text>
+      </g>
+
+      <!-- Noise Detection  centre=240  rect x=195 w=90 -->
+      <g id="pN2" opacity="0">
+        <rect x="195" y="62" width="90" height="56" rx="10" fill="#E8F5E9" stroke="#27AE60" stroke-width="1.6"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#145A32" text-anchor="middle" x="240" y="84">Noise</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#1E8449" text-anchor="middle" x="240" y="103">Detection</text>
+      </g>
+
+      <!-- Adaptive Filter  centre=340  rect x=295 w=90 -->
+      <g id="pN3" opacity="0">
+        <rect x="295" y="62" width="90" height="56" rx="10" fill="#E8F5E9" stroke="#27AE60" stroke-width="1.6"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#145A32" text-anchor="middle" x="340" y="84">Adaptive</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#1E8449" text-anchor="middle" x="340" y="103">Filter</text>
+      </g>
+
+      <!-- Clean EEG  centre=440  rect x=395 w=90, bridge between stages -->
+      <g id="pN4" opacity="0">
+        <rect x="395" y="62" width="90" height="56" rx="10" fill="#EBF5FB" stroke="#2471A3" stroke-width="2"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#154360" text-anchor="middle" x="440" y="84">Clean</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#1A5276" text-anchor="middle" x="440" y="103">EEG</text>
+      </g>
+
+      <!-- Z-score Norm  centre=545  rect x=500 w=90 -->
+      <g id="pN5" opacity="0">
+        <rect x="500" y="62" width="90" height="56" rx="10" fill="#E8F5E9" stroke="#27AE60" stroke-width="1.6"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#145A32" text-anchor="middle" x="545" y="84">Z-score</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#1E8449" text-anchor="middle" x="545" y="103">Norm</text>
+      </g>
+
+      <!-- Quantize  centre=650  rect x=605 w=90 -->
+      <g id="pN6" opacity="0">
+        <rect x="605" y="62" width="90" height="56" rx="10" fill="#E8F5E9" stroke="#27AE60" stroke-width="1.6"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#145A32" text-anchor="middle" x="650" y="84">Quantize</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#1E8449" text-anchor="middle" x="650" y="103">L = 512</text>
+      </g>
+
+      <!-- Tokenize  centre=760  rect x=715 w=90 -->
+      <g id="pN7" opacity="0">
+        <rect x="715" y="62" width="90" height="56" rx="10" fill="#E8F5E9" stroke="#27AE60" stroke-width="1.6"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#145A32" text-anchor="middle" x="760" y="84">Tokenize</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#1E8449" text-anchor="middle" x="760" y="103">Z=[z₁…zₜ]</text>
+      </g>
+
+      <!-- Row 1 horizontal arrows, tight gaps between each node -->
+      <!-- EEG(rx=40,cx=46) right=86 → FFT(x=95) -->
+      <line id="pA0" x1="86" y1="90" x2="93" y2="90" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+      <!-- FFT right=185 → Noise(x=195) -->
+      <line id="pA1" x1="185" y1="90" x2="193" y2="90" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+      <!-- Noise right=285 → Filter(x=295) -->
+      <line id="pA2" x1="285" y1="90" x2="293" y2="90" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+      <!-- Filter right=385 → CleanEEG(x=395) -->
+      <line id="pA3" x1="385" y1="90" x2="393" y2="90" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+      <!-- CleanEEG right=485 → Z-score(x=500) -->
+      <line id="pA4" x1="485" y1="90" x2="498" y2="90" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+      <!-- Z-score right=590 → Quantize(x=605) -->
+      <line id="pA5" x1="590" y1="90" x2="603" y2="90" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+      <!-- Quantize right=695 → Tokenize(x=715) -->
+      <line id="pA6" x1="695" y1="90" x2="713" y2="90" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+
+      <!-- ══════════════════════════════════════════
+           ROW 2, TRAINING BLOCKS  (y-centre = 270)
+           Self-Supervised: centre-x=730, Fine-tuning: centre-x=530
+           Down arrow: Tokenize(730,118) → Pretrain(730,190)
+           Left arrow: Pretrain(680,270) → Finetune(630,270)
+      ══════════════════════════════════════════ -->
+
+      <!-- Down connector: Tokenize(cx=760) bottom(y=118) → Pretrain top(y=188) -->
+      <line id="pA7" x1="760" y1="118" x2="760" y2="188" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+
+      <!-- Self-Supervised block  x=680 y=190 w=160 h=134 → cx=760 -->
+      <g id="pN8" opacity="0">
+        <rect x="680" y="190" width="160" height="134" rx="12" fill="#F0FFF4" stroke="#229954" stroke-width="2"/>
+        <text font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="#145A32" text-anchor="middle" x="760" y="215">Self-Supervised</text>
+        <line x1="690" y1="224" x2="830" y2="224" stroke="#B2DFDB" stroke-width="0.8"/>
+        <text font-family="DM Sans,sans-serif" font-size="11.5" fill="#1E8449" text-anchor="middle" x="760" y="241">4 layers · 4 heads</text>
+        <text font-family="DM Sans,sans-serif" font-size="11.5" fill="#1E8449" text-anchor="middle" x="760" y="259">Embed: 128 · Block: 512</text>
+        <text font-family="DM Sans,sans-serif" font-size="11.5" fill="#1E8449" text-anchor="middle" x="760" y="277">Next-token prediction</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#0B5345" text-anchor="middle" x="760" y="298">𝓛CE + 0.1·𝓛MSE</text>
+      </g>
+      <text id="pLbl3" x="760" y="340" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" letter-spacing="0.14em" fill="#999" opacity="0">PRE-TRAIN</text>
+
+      <!-- weights arrow: Pretrain left(x=680) → Finetune right(x=610) -->
+      <line id="pA8" x1="680" y1="257" x2="612" y2="257" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+      <text id="pWlbl" x="646" y="248" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" fill="#777" opacity="0">weights</text>
+
+      <!-- Fine-tuning block  x=450 y=190 w=160 h=134 → cx=530 -->
+      <g id="pN9" opacity="0">
+        <rect x="450" y="190" width="160" height="134" rx="12" fill="#EEF2FF" stroke="#3949AB" stroke-width="2"/>
+        <text font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="#1A237E" text-anchor="middle" x="530" y="215">Fine-tuning</text>
+        <line x1="460" y1="224" x2="600" y2="224" stroke="#C5CAE9" stroke-width="0.8"/>
+        <text font-family="DM Sans,sans-serif" font-size="11.5" fill="#3949AB" text-anchor="middle" x="530" y="241">Patient-specific</text>
+        <text font-family="DM Sans,sans-serif" font-size="11.5" fill="#3949AB" text-anchor="middle" x="530" y="259">30s segments</text>
+        <text font-family="DM Sans,sans-serif" font-size="11.5" fill="#3949AB" text-anchor="middle" x="530" y="277">Weighted CE loss</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" font-weight="600" fill="#0D1B6E" text-anchor="middle" x="530" y="298">LR: 3e⁻⁵ · 5000 steps</text>
+      </g>
+      <text id="pLbl4" x="530" y="340" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="11" font-weight="600" letter-spacing="0.14em" fill="#999" opacity="0">FINE-TUNE</text>
+
+      <!-- Finetune left(x=450) → Pool right(x=387) -->
+      <line id="pA9" x1="450" y1="257" x2="387" y2="257" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+
+      <!-- Global Pool  x=295 y=231 w=90 h=52 → cx=340 -->
+      <g id="pN10" opacity="0">
+        <rect x="295" y="231" width="90" height="52" rx="10" fill="#E8F5E9" stroke="#27AE60" stroke-width="1.6"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#145A32" text-anchor="middle" x="340" y="253">Global</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#1E8449" text-anchor="middle" x="340" y="272">Pool</text>
+      </g>
+
+      <!-- Pool left(x=295) → Classify right(x=257) -->
+      <line id="pA10" x1="295" y1="257" x2="257" y2="257" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+
+      <!-- Classify  x=165 y=231 w=90 h=52 → cx=210 -->
+      <g id="pN11" opacity="0">
+        <rect x="165" y="231" width="90" height="52" rx="10" fill="#E8F5E9" stroke="#27AE60" stroke-width="1.6"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#145A32" text-anchor="middle" x="210" y="253">Classify</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#1E8449" text-anchor="middle" x="210" y="272">Softmax</text>
+      </g>
+
+      <!-- Classify left(x=165) → Diamond right(x=138) -->
+      <line id="pA11" x1="165" y1="257" x2="140" y2="257" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+
+      <!-- Output diamond  centre=110 cy=257 -->
+      <g id="pN12" opacity="0">
+        <polygon points="110,225 80,257 110,289 140,257" fill="#EBF5FB" stroke="#2471A3" stroke-width="2"/>
+        <text font-family="DM Sans,sans-serif" font-size="13" font-weight="600" fill="#154360" text-anchor="middle" x="110" y="262">ŷ</text>
+      </g>
+
+      <!-- Diamond bottom(y=289) → Result top(y=308) -->
+      <line id="pA12" x1="110" y1="289" x2="110" y2="306" stroke="#888" stroke-width="1.8" marker-end="url(#parrow)" opacity="0"/>
+
+      <!-- Result box  x=56 y=308 w=108 h=72 → cx=110 -->
+      <g id="pN13" opacity="0">
+        <rect x="56" y="308" width="108" height="72" rx="12" fill="#FDEDEC" stroke="#C0392B" stroke-width="2"/>
+        <text font-family="DM Sans,sans-serif" font-size="14" font-weight="700" fill="#922B21" text-anchor="middle" x="110" y="333">y = 1</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#C0392B" text-anchor="middle" x="110" y="353">Seizure</text>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#C0392B" text-anchor="middle" x="110" y="370">in 30s ⚠</text>
+      </g>
+
+      <!-- ══ LEGEND, right side ══ -->
+      <g id="pLegend" opacity="0">
+        <text font-family="DM Sans,sans-serif" font-size="11" font-weight="600" letter-spacing="0.12em" fill="#aaa" x="880" y="195">LEGEND</text>
+        <ellipse cx="891" cy="218" rx="9" ry="9" fill="#FFF8F0" stroke="#E67E22" stroke-width="1.5"/>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#555" x="907" y="222">Input / Output</text>
+        <rect x="882" y="238" width="18" height="13" rx="3" fill="#E8F5E9" stroke="#27AE60" stroke-width="1.5"/>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#555" x="907" y="250">Processing step</text>
+        <rect x="882" y="262" width="18" height="13" rx="3" fill="#F0FFF4" stroke="#229954" stroke-width="1.8"/>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#555" x="907" y="274">Pre-training</text>
+        <rect x="882" y="286" width="18" height="13" rx="3" fill="#EEF2FF" stroke="#3949AB" stroke-width="1.8"/>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#555" x="907" y="298">Fine-tuning</text>
+        <rect x="882" y="310" width="18" height="13" rx="3" fill="#FDEDEC" stroke="#C0392B" stroke-width="1.8"/>
+        <text font-family="DM Sans,sans-serif" font-size="12" fill="#555" x="907" y="322">Prediction</text>
+      </g>
+
+    </svg>
+    <p id="pDesc" style="font-size:clamp(14px,1.4vw,18px);color:#666;text-align:center;min-height:1.6em;margin-top:.8vh;transition:opacity .35s ease;font-family:'DM Sans',sans-serif"></p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE RESULTS, performance table
+══════════════════════════════════════════════════════ -->
+<section class="slide" id="slideResults">
+  <div class="label">Experimental Results</div>
+  <h2 class="heading" style="margin-bottom:2vh">Patient-specific prediction performance</h2>
+
+  <!-- Metrics row -->
+  <div style="display:flex;gap:clamp(12px,2.5vw,32px);justify-content:center;margin-bottom:3vh;flex-wrap:wrap">
+    <div class="res-pill" id="rp1">
+      <div class="res-pill-val">≥ 93.9%</div>
+      <div class="res-pill-lbl">Validation accuracy</div>
+    </div>
+    <div class="res-pill" id="rp2">
+      <div class="res-pill-val">≥ 0.82</div>
+      <div class="res-pill-lbl">F1 score</div>
+    </div>
+    <div class="res-pill" id="rp3">
+      <div class="res-pill-val">100%</div>
+      <div class="res-pill-lbl">Sensitivity (all seizures caught)</div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div style="width:100%;max-width:min(900px,94vw);overflow-x:auto" id="resTable">
+    <table style="width:100%;border-collapse:collapse;font-family:'DM Sans',sans-serif;font-size:clamp(12px,1.2vw,16px)">
+      <thead>
+        <tr style="border-bottom:2px solid #0a0a0a">
+          <th class="rt" style="text-align:left;padding:10px 14px;font-weight:600;letter-spacing:.04em">Patient</th>
+          <th class="rt">Train Acc</th>
+          <th class="rt">Val Acc</th>
+          <th class="rt">Precision</th>
+          <th class="rt">Recall</th>
+          <th class="rt">F1</th>
+          <th class="rt">FAR (h⁻¹)</th>
+          <th class="rt">Delay (s)</th>
+          <th class="rt">Sens.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="res-row" id="rr1" style="opacity:0;transform:translateY(10px)">
+          <td class="rt" style="text-align:left;padding:12px 14px;font-family:'DM Mono',monospace;font-size:.9em;color:#555">aaaaaaac</td>
+          <td class="rt rg">1.000</td>
+          <td class="rt rb">0.9706</td>
+          <td class="rt">1.000</td>
+          <td class="rt">0.833</td>
+          <td class="rt rb">0.909</td>
+          <td class="rt rg">0.00</td>
+          <td class="rt">6.89 s</td>
+          <td class="rt rs">100%</td>
+        </tr>
+        <tr class="res-row" id="rr2" style="opacity:0;transform:translateY(10px)">
+          <td class="rt" style="text-align:left;padding:12px 14px;font-family:'DM Mono',monospace;font-size:.9em;color:#555">aaaaabnn</td>
+          <td class="rt rg">1.000</td>
+          <td class="rt rb">0.9444</td>
+          <td class="rt">0.875</td>
+          <td class="rt">0.778</td>
+          <td class="rt rb">0.824</td>
+          <td class="rt rg">0.00</td>
+          <td class="rt">12.55 s</td>
+          <td class="rt rs">100%</td>
+        </tr>
+        <tr class="res-row" id="rr3" style="opacity:0;transform:translateY(10px)">
+          <td class="rt" style="text-align:left;padding:12px 14px;font-family:'DM Mono',monospace;font-size:.9em;color:#555">aaaaadpj</td>
+          <td class="rt rg">1.000</td>
+          <td class="rt rb">0.9394</td>
+          <td class="rt">0.750</td>
+          <td class="rt">1.000</td>
+          <td class="rt rb">0.857</td>
+          <td class="rt" style="color:#C0392B;font-weight:600">13.82</td>
+          <td class="rt">30.00 s</td>
+          <td class="rt rs">100%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="caption fade-item" id="resCap" style="margin-top:2vh">All seizures detected across all three patients. False alarm rate near zero for two patients.</p>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE ALARM, patient aaaaadpj timeline
+══════════════════════════════════════════════════════ -->
+<section class="slide" id="slideAlarm" style="padding:3vh 5vw">
+  <div class="label">Patient aaaaadpj · Alarm Timeline</div>
+  <h2 class="heading" style="font-size:clamp(22px,2.8vw,40px);margin-bottom:0.2vh">Binary alarms &amp; confidence over time</h2>
+
+  <div style="width:100%;max-width:80vw;display:flex;flex-direction:column;justify-content:center">
+
+    <!-- Panel label row -->
+
+    <img 
+      src="https://i.postimg.cc/NY7gwhQv/aaaaadpj-predictions.png"
+      alt=""
+      style="
+        width:100%;
+        height:auto;
+        object-fit:contain;
+        border-radius:8px;
+        margin: O;
+      "
+    >
+        
+  </div>
+  <p class="caption" style="margin-top:.6vh;color:#999;font-size:clamp(11px,1vw,14px)">
+    Confidence spikes precede both seizures &nbsp;·&nbsp; FAR = 13.82 h⁻¹ &nbsp;·&nbsp; Prediction delay = 30 s &nbsp;·&nbsp; Sensitivity = 100%
+  </p>
+</section>
+<!-- ══════════════════════════════════════════════════════
+     SLIDE CONCLUSION
+══════════════════════════════════════════════════════ -->
+<section class="slide" id="slideConclusion">
+  <div class="stagger">
+    <div class="label">Conclusion</div>
+    <h2 class="heading">What we showed</h2>
+    <div style="display:flex;flex-direction:column;gap:clamp(10px,1.8vh,22px);max-width:min(780px,88vw);width:100%;text-align:left">
+      <div class="concl-item" id="ci1">
+        <span class="concl-num">01</span>
+        <span class="concl-text">EEG signals can be <strong>tokenized</strong> and fed into a GPT-style transformer, treating brain activity as a language, and transformers<br>might be fluent in it.</span>
+      </div>
+      <div class="concl-item" id="ci2">
+        <span class="concl-num">02</span>
+        <span class="concl-text"><strong>Self-supervised pretraining</strong> learns general EEG dynamics without any seizure labels, then patient-specific fine-tuning adapts in minutes.</span>
+      </div>
+      <div class="concl-item" id="ci3">
+        <span class="concl-num">03</span>
+        <span class="concl-text">Validation accuracy <strong>≥ 93.9%</strong> and F1 <strong>≥ 0.82</strong> across all three patients, with <strong>100% sensitivity</strong>, every seizure detected.</span>
+      </div>
+      <div class="concl-item" id="ci4">
+        <span class="concl-num">04</span>
+        <span class="concl-text">Future work: larger cohorts, wearable EEG, threshold tuning to reduce false alarms, real-time deployment.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE THANKS
+══════════════════════════════════════════════════════ -->
+<section class="slide" id="slideThanks">
+  <svg class="brain-wave" viewBox="0 0 280 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:1">
+    <path d="M0 40 L20 40 L30 15 L40 65 L50 25 L60 55 L70 35 L80 48 L95 40 L110 40 L120 10 L130 70 L140 20 L150 60 L160 38 L175 42 L190 40 L200 25 L210 55 L220 30 L230 50 L240 40 L260 40 L280 40"
+      stroke="#0a0a0a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="stroke-dasharray:none"/>
+  </svg>
+  <div class="stagger">
+    <h1 class="display" style="margin-bottom:1.5vh">Thank you</h1>
+    <div class="divider"></div>
+    <p class="meta" style="margin-top:1.5vh"><strong>Mohamed MAHDI</strong> &nbsp;·&nbsp; Asma BAGHDADI</p>
+    <p class="meta">National Engineering School of Tunis &nbsp;·&nbsp; University of Sfax</p>
+    <p class="meta" style="margin-top:1.5vh;font-size:clamp(12px,1vw,15px);letter-spacing:.04em">
+      Code: <strong>github.com/Mahdyy02/gpt-eeg-transformer</strong>
+    </p>
+    <p class="meta" style="font-size:clamp(11px,.9vw,14px);color:#bbb;margin-top:2vh">Questions welcome</p>
+  </div>
+</section>
+
+<style>
+/* ── Results table ── */
+.rt{padding:10px 14px;text-align:center;border-bottom:1px solid #f0f0f0;font-family:'DM Sans',sans-serif}
+.rg{color:#27AE60;font-weight:600}
+.rb{color:#2471A3;font-weight:600}
+.rs{color:#0a0a0a;font-weight:700}
+.res-row{transition:opacity .5s ease,transform .5s ease}
+.res-pill{border:1.5px solid #e8e8e8;border-radius:16px;padding:clamp(14px,2vh,24px) clamp(18px,2.5vw,32px);text-align:center;min-width:clamp(140px,18vw,210px);opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.res-pill.show{opacity:1;transform:translateY(0)}
+.res-pill-val{font-family:'DM Serif Display',serif;font-size:clamp(24px,3vw,40px);font-weight:400;color:#0a0a0a;line-height:1.1}
+.res-pill-lbl{font-size:clamp(11px,1vw,14px);color:#888;margin-top:.5vh;letter-spacing:.03em}
+/* ── Conclusion items ── */
+.concl-item{display:flex;align-items:flex-start;gap:clamp(14px,2vw,24px);opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}
+.concl-item.show{opacity:1;transform:translateY(0)}
+.concl-num{font-family:'DM Serif Display',serif;font-size:clamp(18px,2vw,26px);color:#ddd;flex-shrink:0;line-height:1.3;width:clamp(28px,3vw,40px)}
+.concl-text{font-size:clamp(15px,1.5vw,20px);color:#333;line-height:1.6}
+/* ── Thank you brain wave override ── */
+#slideThanks .brain-wave{opacity:0}
+#slideThanks.active .brain-wave{animation:up .7s .05s forwards cubic-bezier(.4,0,.2,1)}
+#slideThanks.active .brain-wave path{stroke-dasharray:none}
+</style>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// SLIDE REGISTRY
+// Each entry: { id, type: 'simple'|'stepped', steps? }
+// ══════════════════════════════════════════════════════════
+const REGISTRY = [
+  { id:'slide0',    type:'simple' },
+  { id:'slide1',    type:'simple' },
+  { id:'slide2',    type:'simple' },
+  { id:'slide3',    type:'simple' },
+  { id:'slide4',    type:'simple' },
+  { id:'slideBridge', type:'stepped', steps:3 },
+  { id:'slidePA',   type:'stepped', steps:3 },
+  { id:'slidePB',   type:'stepped', steps:3 },
+  { id:'slidePC',   type:'stepped', steps:3 },
+  { id:'slidePD',   type:'stepped', steps:4 },
+  { id:'slideGPT',  type:'stepped', steps:3 },
+  { id:'slideBERT', type:'stepped', steps:3 },
+  { id:'slideFT',   type:'stepped', steps:4 },
+  { id:'slidePipeline',    type:'stepped', steps:5 },
+  { id:'slideResults',     type:'stepped', steps:3 },
+  { id:'slideAlarm',       type:'simple' },
+  { id:'slideConclusion',  type:'stepped', steps:4 },
+  { id:'slideThanks',      type:'simple' },
+];
+
+const progressEl = document.getElementById('progress');
+const counterEl  = document.getElementById('counter');
+const hintEl     = document.getElementById('stepHint');
+
+let slideIdx = 0;
+let stepIdx  = 0;
+
+// ── Total micro-steps across all slides (for progress bar) ──
+function totalMicro(){
+  return REGISTRY.reduce((s,r)=> s + (r.type==='stepped' ? r.steps : 1), 0);
+}
+function doneMicro(){
+  let d=0;
+  for(let i=0;i<slideIdx;i++){
+    d += REGISTRY[i].type==='stepped' ? REGISTRY[i].steps : 1;
+  }
+  return d + stepIdx;
+}
+
+function updateUI(){
+  progressEl.style.width = (doneMicro()/totalMicro()*100)+'%';
+  counterEl.textContent  = (slideIdx+1)+' / '+REGISTRY.length;
+}
+
+// ══════════════════════════════════════════════════════════
+// SLIDE ACTIVATION
+// ══════════════════════════════════════════════════════════
+function activateSlide(si, st){
+  document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById(REGISTRY[si].id);
+  el.classList.add('active');
+  runStep(si, st);
+  updateUI();
+  const atEnd = si===REGISTRY.length-1 && st===(REGISTRY[si].steps||1)-1;
+  hintEl.style.opacity = atEnd ? '.3':'1';
+}
+
+function advance(){
+  const reg = REGISTRY[slideIdx];
+  const maxStep = (reg.steps||1) - 1;
+  if(reg.type==='stepped' && stepIdx < maxStep){
+    stepIdx++;
+    runStep(slideIdx, stepIdx);
+    updateUI();
+  } else if(slideIdx < REGISTRY.length-1){
+    slideIdx++;
+    stepIdx=0;
+    initSlide(slideIdx);
+    activateSlide(slideIdx, 0);
+  }
+}
+function retreat(){
+  const reg = REGISTRY[slideIdx];
+  if(reg.type==='stepped' && stepIdx > 0){
+    stepIdx--;
+    runStep(slideIdx, stepIdx);
+    updateUI();
+  } else if(slideIdx > 0){
+    slideIdx--;
+    stepIdx = (REGISTRY[slideIdx].steps||1)-1;
+    activateSlide(slideIdx, stepIdx);
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// PER-SLIDE INIT + STEP RUNNERS
+// ══════════════════════════════════════════════════════════
+function initSlide(si){
+  const id = REGISTRY[si].id;
+  if(id==='slidePA') initPA();
+  if(id==='slidePB') initPB();
+  if(id==='slidePC') initPC();
+  if(id==='slidePD') initPD();
+  if(id==='slideGPT')  initGPT();
+  if(id==='slideBERT') initBERT();
+  if(id==='slideFT')   initFT();
+  if(id==='slidePipeline') initPipeline();
+  if(id==='slideResults') initResults();
+  if(id==='slideConclusion') initConclusion();
+}
+
+function runStep(si, st){
+  const id = REGISTRY[si].id;
+  if(id==='slideBridge') stepBridge(st);
+  if(id==='slidePA')     stepPA(st);
+  if(id==='slidePB')     stepPB(st);
+  if(id==='slidePC')     stepPC(st);
+  if(id==='slidePD')     stepPD(st);
+  if(id==='slideGPT')    stepGPT(st);
+  if(id==='slideBERT')   stepBERT(st);
+  if(id==='slideFT')     stepFT(st);
+  if(id==='slidePipeline') stepPipeline(st);
+  if(id==='slideResults') stepResults(st);
+  if(id==='slideConclusion') stepConclusion(st);
+}
+
+// ──────────────────────────────────────
+// BRIDGE SLIDE
+// ──────────────────────────────────────
+function stepBridge(s){
+  const lbl = document.getElementById('bridgeLabel');
+  const bq1 = document.getElementById('bq1');
+  const steps= ['bs1','bs2','bs3','bs4'];
+  const arrows=['ba1','ba2','ba3'];
+  const tag  = document.getElementById('bridgeTagline');
+
+  // Reset everything
+  lbl.style.opacity='0';
+  bq1.classList.remove('show');
+  steps.forEach(id=>document.getElementById(id).classList.remove('show'));
+  arrows.forEach(id=>document.getElementById(id).classList.remove('show'));
+  tag.classList.remove('show');
+
+  if(s===0){
+    setTimeout(()=>lbl.style.opacity='1',100);
+    setTimeout(()=>bq1.classList.add('show'),200);
+  } else if(s===1){
+    lbl.style.opacity='1'; bq1.classList.add('show');
+    steps.forEach((id,i)=> setTimeout(()=>document.getElementById(id).classList.add('show'),i*120));
+    arrows.forEach((id,i)=> setTimeout(()=>document.getElementById(id).classList.add('show'),i*120+180));
+  } else if(s===2){
+    lbl.style.opacity='1'; bq1.classList.add('show');
+    steps.forEach(id=>document.getElementById(id).classList.add('show'));
+    arrows.forEach(id=>document.getElementById(id).classList.add('show'));
+    tag.classList.add('show');
+  }
+}
+
+// ──────────────────────────────────────
+// WAVE DATA (shared PA→PC)
+// ──────────────────────────────────────
+const N=18, W=880, H=200;
+const rawY=[];
+for(let i=0;i<N;i++){
+  const t=i/(N-1);
+  rawY.push(
+    0.38*Math.sin(2*Math.PI*2.1*t)
+   +0.22*Math.sin(2*Math.PI*5.3*t+0.8)
+   +0.14*Math.sin(2*Math.PI*11*t+1.2)
+   +0.08*(Math.random()-.5)
+  );
+}
+const minY=Math.min(...rawY),maxY=Math.max(...rawY);
+const normY=rawY.map(v=>(v-minY)/(maxY-minY));
+const L=8;
+const tokVals=normY.map(v=>Math.min(L-1,Math.floor(v*L)));
+function sampleX(i){return 40+(i/(N-1))*(W-80);}
+function sampleYpx(v,h){return h-20-v*(h-40);}
+
+// ──────────────────────────────────────
+// SLIDE PA, raw signal
+// ──────────────────────────────────────
+function initPA(){
+  const canvas=document.getElementById('waveCanvas');
+  canvas.width=canvas.parentElement.clientWidth||W;
+  canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  const w=canvas.width;
+  ctx.clearRect(0,0,w,H);
+  ctx.beginPath(); ctx.strokeStyle='#0a0a0a'; ctx.lineWidth=1.8; ctx.lineJoin='round';
+  for(let i=0;i<200;i++){
+    const t=i/199;
+    const x=40+t*(w-80);
+    const yv=0.38*Math.sin(2*Math.PI*2.1*t)+0.22*Math.sin(2*Math.PI*5.3*t+0.8)+0.14*Math.sin(2*Math.PI*11*t+1.2);
+    const yn=(yv+0.74)/1.48;
+    const y=H-20-yn*(H-40);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.stroke();
+  ctx.font='11px DM Sans,sans-serif'; ctx.fillStyle='#bbb';
+  ctx.fillText('voltage (μV)',0,14); ctx.fillText('time →',w-52,H-4);
+
+  const wrap=document.getElementById('canvasWrap');
+  wrap.querySelectorAll('.sample-dot,.sample-line').forEach(e=>e.remove());
+  for(let i=0;i<N;i++){
+    const xpct=(sampleX(i)/W)*100;
+    const ypx=sampleYpx(normY[i],H);
+    const ypct=(ypx/H)*100;
+    const dot=document.createElement('div');
+    dot.className='sample-dot'; dot.style.left=xpct+'%'; dot.style.top=ypct+'%'; dot.dataset.i=i;
+    wrap.appendChild(dot);
+    const line=document.createElement('div');
+    line.className='sample-line'; line.style.left=xpct+'%'; line.style.setProperty('--h',(H-ypx-20)+'px'); line.dataset.i=i;
+    wrap.appendChild(line);
+  }
+}
+function stepPA(s){
+  const dots=document.querySelectorAll('#canvasWrap .sample-dot');
+  const lines=document.querySelectorAll('#canvasWrap .sample-line');
+  const desc=document.getElementById('aDesc');
+  const cap=document.getElementById('aCap');
+  dots.forEach(d=>d.classList.remove('show')); lines.forEach(l=>l.classList.remove('show'));
+  cap.classList.remove('show');
+  if(s===0){ desc.textContent='The brain generates continuous electrical voltage over time.'; }
+  else if(s===1){ dots.forEach((d,i)=>setTimeout(()=>d.classList.add('show'),i*35)); desc.textContent='We sample it at 250 Hz, 250 measurements per second.'; }
+  else if(s===2){ dots.forEach(d=>d.classList.add('show')); lines.forEach((l,i)=>setTimeout(()=>l.classList.add('show'),i*35)); desc.textContent='Each sample is a real-valued amplitude, we need integers.'; setTimeout(()=>cap.classList.add('show'),400); }
+}
+
+// ──────────────────────────────────────
+// SLIDE PB, quantization
+// ──────────────────────────────────────
+function initPB(){
+  const wrap=document.getElementById('quantWrap');
+  wrap.innerHTML='';
+  for(let lv=0;lv<=L;lv++){
+    const pct=lv/L*100;
+    const line=document.createElement('div');
+    line.className='q-level'; line.style.bottom=pct+'%';
+    const lbl=document.createElement('span');
+    lbl.textContent=lv===0?'0':lv===L?'L':lv%2===0?lv:'';
+    line.appendChild(lbl); wrap.appendChild(line);
+  }
+  for(let i=0;i<N;i++){
+    const xpct=(sampleX(i)/W)*100;
+    const barH=((tokVals[i]+1)/L*100);
+    const bar=document.createElement('div');
+    bar.className='q-bar'; bar.style.left=`calc(${xpct}% - 9px)`; bar.style.width='18px'; bar.style.height=barH+'%'; bar.dataset.i=i;
+    wrap.appendChild(bar);
+    const arr=document.createElement('div');
+    arr.className='q-arrow'; arr.style.left=xpct+'%'; arr.style.bottom=`calc(${barH}% + 4px)`; arr.textContent=tokVals[i]*64; arr.dataset.i=i;
+    wrap.appendChild(arr);
+  }
+}
+function stepPB(s){
+  const bars=document.querySelectorAll('#quantWrap .q-bar');
+  const arrs=document.querySelectorAll('#quantWrap .q-arrow');
+  const desc=document.getElementById('bDesc');
+  const cap=document.getElementById('bCap');
+  bars.forEach(b=>b.classList.remove('show')); arrs.forEach(a=>a.classList.remove('show')); cap.classList.remove('show');
+  if(s===0){ desc.textContent='Raw amplitudes are continuous, we need integers.'; }
+  else if(s===1){ bars.forEach((b,i)=>setTimeout(()=>b.classList.add('show'),i*40)); desc.textContent='Each sample amplitude maps to one of 512 discrete bins.'; }
+  else if(s===2){ bars.forEach(b=>b.classList.add('show')); arrs.forEach((a,i)=>setTimeout(()=>a.classList.add('show'),i*40)); desc.textContent='The bin index is the token value, an integer from 0 to 511.'; setTimeout(()=>cap.classList.add('show'),400); }
+}
+
+// ──────────────────────────────────────
+// SLIDE PC, tokenization
+// ──────────────────────────────────────
+const displayToks=tokVals.slice(0,10);
+function initPC(){
+  const flow=document.getElementById('tokenFlow');
+  flow.innerHTML='';
+  const col1=document.createElement('div'); col1.className='token-col'; col1.innerHTML='<div class="col-label">Amplitude</div>';
+  const col2=document.createElement('div'); col2.className='token-col'; col2.innerHTML='<div class="col-label">Bin (0–511)</div>';
+  const col3=document.createElement('div'); col3.className='token-col'; col3.innerHTML='<div class="col-label">Token</div>';
+  const ar1=document.createElement('div'); ar1.className='arrow-col'; ar1.innerHTML='→';
+  const ar2=document.createElement('div'); ar2.className='arrow-col'; ar2.innerHTML='→';
+  displayToks.forEach((tv,i)=>{
+    const b1=document.createElement('div'); b1.className='token-box'; b1.textContent=(normY[i]*2-1).toFixed(2); b1.dataset.i=i; b1.dataset.col=1; col1.appendChild(b1);
+    const b2=document.createElement('div'); b2.className='token-box'; b2.textContent=tv*64; b2.dataset.i=i; b2.dataset.col=2; col2.appendChild(b2);
+    const b3=document.createElement('div'); b3.className='token-box'; b3.textContent=tv*64; b3.dataset.i=i; b3.dataset.col=3; col3.appendChild(b3);
+  });
+  flow.appendChild(col1); flow.appendChild(ar1); flow.appendChild(col2); flow.appendChild(ar2); flow.appendChild(col3);
+}
+function stepPC(s){
+  const desc=document.getElementById('cDesc'); const cap=document.getElementById('cCap');
+  const c1=document.querySelectorAll('[data-col="1"]'); const c2=document.querySelectorAll('[data-col="2"]'); const c3=document.querySelectorAll('[data-col="3"]');
+  const arrows=document.querySelectorAll('.arrow-col');
+  [...c1,...c2,...c3].forEach(b=>{b.classList.remove('show','highlight')}); arrows.forEach(a=>a.classList.remove('show')); cap.classList.remove('show');
+  if(s===0){ desc.textContent='Each bin number is a token in a vocabulary of 512.'; }
+  else if(s===1){ c1.forEach((b,i)=>setTimeout(()=>b.classList.add('show'),i*40)); desc.textContent='Start with the raw normalized amplitudes…'; }
+  else if(s===2){
+    c1.forEach(b=>b.classList.add('show')); arrows.forEach(a=>a.classList.add('show'));
+    c2.forEach((b,i)=>setTimeout(()=>b.classList.add('show'),i*40));
+    c3.forEach((b,i)=>setTimeout(()=>b.classList.add('show','highlight'),i*40+200));
+    desc.textContent='Each amplitude → bin index → integer token.';
+    setTimeout(()=>cap.classList.add('show'),500);
+  }
+}
+
+// ──────────────────────────────────────
+// SLIDE PD, self-supervised
+// ──────────────────────────────────────
+const sslToks=[247,251,238,194,142,108,97,'?'];
+function initPD(){
+  const seqRow=document.getElementById('sslSeq'); const predRow=document.getElementById('sslPred');
+  seqRow.innerHTML=''; predRow.innerHTML='';
+  const lbl=document.createElement('span');
+  lbl.style.cssText='font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-right:8px;white-space:nowrap'; lbl.textContent='Input';
+  seqRow.appendChild(lbl);
+  sslToks.forEach((tv,i)=>{
+    const t=document.createElement('div'); t.className='tok '+(tv==='?'?'masked':'context'); t.textContent=tv; t.dataset.i=i; seqRow.appendChild(t);
+    if(i===sslToks.length-2){ const a=document.createElement('div'); a.className='arrow-right'; a.textContent='→'; a.id='sslArr'; seqRow.appendChild(a); }
+  });
+  const lbl2=document.createElement('span');
+  lbl2.style.cssText='font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-right:8px;white-space:nowrap'; lbl2.textContent='Predict';
+  predRow.appendChild(lbl2);
+  const pred=document.createElement('div'); pred.className='tok predicted'; pred.id='sslPredTok'; pred.textContent='89'; predRow.appendChild(pred);
+  const eq=document.createElement('span'); eq.style.cssText='font-size:13px;color:#bbb;margin:0 8px;opacity:0;transition:opacity .4s ease'; eq.id='sslEq'; eq.textContent='≈ next token'; predRow.appendChild(eq);
+}
+function stepPD(s){
+  const desc=document.getElementById('dCap'); const lossBox=document.getElementById('lossBox'); const sslNote=document.getElementById('sslNote');
+  const toks=document.querySelectorAll('#sslSeq .tok'); const arr=document.getElementById('sslArr');
+  const predTok=document.getElementById('sslPredTok'); const eq=document.getElementById('sslEq');
+  toks.forEach(t=>t.classList.remove('show'));
+  if(arr) arr.classList.remove('show');
+  if(predTok) predTok.classList.remove('show');
+  if(eq) eq.style.opacity=0;
+  lossBox.classList.remove('show'); sslNote.classList.remove('show'); desc.classList.remove('show');
+  if(s===0){ /* all hidden */ }
+  else if(s===1){ toks.forEach((t,i)=>{ if(i<sslToks.length-1) setTimeout(()=>t.classList.add('show'),i*60); }); }
+  else if(s===2){
+    toks.forEach((t,i)=>{ if(i<sslToks.length-1) t.classList.add('show'); });
+    const maskTok=toks[sslToks.length-1]; if(maskTok) setTimeout(()=>maskTok.classList.add('show'),0);
+    if(arr) setTimeout(()=>arr.classList.add('show'),200);
+    if(predTok) setTimeout(()=>predTok.classList.add('show'),400);
+    if(eq) setTimeout(()=>eq.style.opacity=1,600);
+    lossBox.classList.add('show');
+  } else if(s===3){
+    toks.forEach(t=>t.classList.add('show'));
+    if(arr) arr.classList.add('show'); if(predTok) predTok.classList.add('show'); if(eq) eq.style.opacity=1;
+    lossBox.classList.add('show'); sslNote.classList.add('show');
+    setTimeout(()=>desc.classList.add('show'),200);
+  }
+}
+
+// ──────────────────────────────────────
+// SLIDE GPT
+// ──────────────────────────────────────
+function initGPT(){}
+function stepGPT(s){
+  const box=document.getElementById('gptBox');
+  const waveRow=document.getElementById('gptWaveRow');
+  const fluent=document.getElementById('gptFluent');
+  box.classList.remove('show'); waveRow.classList.remove('show'); fluent.classList.remove('show');
+  if(s===0){ setTimeout(()=>box.classList.add('show'),100); }
+  else if(s===1){ box.classList.add('show'); setTimeout(()=>waveRow.classList.add('show'),200); }
+  else if(s===2){ box.classList.add('show'); waveRow.classList.add('show'); setTimeout(()=>fluent.classList.add('show'),200); }
+}
+
+// ──────────────────────────────────────
+// SLIDE BERT
+// ──────────────────────────────────────
+function initBERT(){}
+function stepBERT(s){
+  const rows=['dr1','dr2','dr3'].map(id=>document.getElementById(id));
+  const note=document.getElementById('bertNote');
+  rows.forEach(r=>r.classList.remove('show')); note.classList.remove('show');
+  if(s===0){ setTimeout(()=>rows[0].classList.add('show'),100); }
+  else if(s===1){ rows.forEach((r,i)=>setTimeout(()=>r.classList.add('show'),i*160)); }
+  else if(s===2){ rows.forEach(r=>r.classList.add('show')); setTimeout(()=>note.classList.add('show'),200); }
+}
+
+// ──────────────────────────────────────
+// SLIDE FT
+// ──────────────────────────────────────
+function initFT(){}
+function stepFT(s){
+  const blocks=['ftb1','ftb2','ftb3'].map(id=>document.getElementById(id));
+  const arrows=['fta1','fta2'].map(id=>document.getElementById(id));
+  const q=document.getElementById('ftQ');
+  const yes=document.getElementById('ftYes'), no=document.getElementById('ftNo');
+  const note=document.getElementById('ftNote');
+  blocks.forEach(b=>b.classList.remove('show')); arrows.forEach(a=>a.classList.remove('show'));
+  q.classList.remove('show'); yes.classList.remove('show'); no.classList.remove('show'); note.classList.remove('show');
+  if(s===0){ setTimeout(()=>{ blocks[0].classList.add('show'); },100); }
+  else if(s===1){
+    blocks.forEach((b,i)=>setTimeout(()=>b.classList.add('show'),i*150));
+    arrows.forEach((a,i)=>setTimeout(()=>a.classList.add('show'),i*150+100));
+  } else if(s===2){
+    blocks.forEach(b=>b.classList.add('show')); arrows.forEach(a=>a.classList.add('show'));
+    setTimeout(()=>q.classList.add('show'),200);
+    setTimeout(()=>{ yes.classList.add('show'); no.classList.add('show'); },500);
+  } else if(s===3){
+    blocks.forEach(b=>b.classList.add('show')); arrows.forEach(a=>a.classList.add('show'));
+    q.classList.add('show'); yes.classList.add('show'); no.classList.add('show');
+    setTimeout(()=>note.classList.add('show'),200);
+  }
+}
+
+// ──────────────────────────────────────
+// SLIDE PIPELINE, full architecture
+// ──────────────────────────────────────
+function pShow(ids, delay0){
+  ids.forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    setTimeout(()=>{ el.style.transition='opacity .45s ease'; el.style.opacity='1'; }, delay0 + i*60);
+  });
+}
+function pHide(ids){
+  ids.forEach(id=>{ const el=document.getElementById(id); if(el){ el.style.transition='none'; el.style.opacity='0'; } });
+}
+
+const ALL_P = ['pBox1','pLbl1','pBox2','pLbl2',
+  'pN0','pN1','pN2','pN3','pN4','pN5','pN6','pN7','pN8','pN9','pN10','pN11','pN12','pN13',
+  'pA0','pA1','pA2','pA3','pA4','pA5','pA6','pA7','pA8','pA9','pA10','pA11','pA12',
+  'pWlbl','pLbl3','pLbl4','pLegend'];
+
+function initPipeline(){ pHide(ALL_P); document.getElementById('pDesc').textContent=''; }
+
+const PDESC = [
+  'Four stages transform raw EEG into a seizure prediction.',
+  'Stage 1: Noise-aware preprocessing, FFT identifies and adaptively filters artifact frequencies.',
+  'Stage 2: Tokenization, z-score normalization and quantization into 512 discrete amplitude bins.',
+  'Stages 3 & 4: Self-supervised pretraining learns EEG grammar; patient-specific fine-tuning specializes for seizure prediction.',
+  'Inference: global pooling + softmax classifies each 30-second window as pre-ictal or normal.',
+];
+
+function stepPipeline(s){
+  const desc = document.getElementById('pDesc');
+  desc.style.opacity = '0';
+  setTimeout(()=>{ desc.textContent = PDESC[s]; desc.style.opacity='1'; }, 200);
+
+  pHide(ALL_P);
+
+  if(s===0){
+    // overview: all dashed boxes + labels, faded
+    pShow(['pBox1','pLbl1','pBox2','pLbl2'], 100);
+    pShow(['pN0','pN1','pN2','pN3','pN4','pN5','pN6','pN7'], 300);
+    pShow(['pA0','pA1','pA2','pA3','pA4','pA5','pA6'], 500);
+    pShow(['pN8','pN9','pN10','pN11','pN12','pN13'], 500);
+    pShow(['pA7','pA8','pA9','pA10','pA11','pA12','pWlbl'], 700);
+    pShow(['pLbl3','pLbl4'], 700);
+    pShow(['pLegend'], 900);
+  } else if(s===1){
+    // stage 1 highlight
+    pShow(['pBox1','pLbl1'], 0);
+    pShow(['pN0','pN1','pN2','pN3','pN4'], 100);
+    pShow(['pA0','pA1','pA2','pA3'], 400);
+  } else if(s===2){
+    // stage 2
+    pShow(['pBox2','pLbl2'], 0);
+    pShow(['pN4'], 0);
+    pShow(['pN5','pN6','pN7'], 100);
+    pShow(['pA4','pA5','pA6'], 350);
+  } else if(s===3){
+    // stages 3 & 4
+    pShow(['pN7','pA7'], 0);
+    pShow(['pN8','pLbl3'], 150);
+    pShow(['pA8','pWlbl'], 550);
+    pShow(['pN9','pLbl4'], 750);
+  } else if(s===4){
+    // inference + legend
+    pShow(['pN9'], 0);
+    pShow(['pN10','pA9'], 100);
+    pShow(['pN11','pA10'], 300);
+    pShow(['pN12','pA11'], 500);
+    pShow(['pA12','pN13'], 700);
+    pShow(['pLegend'], 900);
+  }
+}
+
+// ──────────────────────────────────────
+// SLIDE RESULTS
+// ──────────────────────────────────────
+function initResults(){
+  ['rp1','rp2','rp3'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.classList.remove('show'); } });
+  ['rr1','rr2','rr3'].forEach(id=>{ const el=document.getElementById(id); if(el){ el.style.opacity='0'; el.style.transform='translateY(10px)'; } });
+  const cap=document.getElementById('resCap'); if(cap) cap.classList.remove('show');
+}
+function stepResults(s){
+  if(s===0){
+    ['rp1','rp2','rp3'].forEach((id,i)=>setTimeout(()=>document.getElementById(id)?.classList.add('show'),i*150));
+  } else if(s===1){
+    ['rp1','rp2','rp3'].forEach(id=>document.getElementById(id)?.classList.add('show'));
+    ['rr1','rr2','rr3'].forEach((id,i)=>setTimeout(()=>{
+      const el=document.getElementById(id); if(!el) return;
+      el.style.transition='opacity .5s ease,transform .5s ease';
+      el.style.opacity='1'; el.style.transform='translateY(0)';
+    }, i*180));
+  } else if(s===2){
+    ['rp1','rp2','rp3'].forEach(id=>document.getElementById(id)?.classList.add('show'));
+    ['rr1','rr2','rr3'].forEach(id=>{ const el=document.getElementById(id); if(!el) return; el.style.opacity='1'; el.style.transform='translateY(0)'; });
+    document.getElementById('resCap')?.classList.add('show');
+  }
+}
+
+// ──────────────────────────────────────
+// SLIDE CONCLUSION
+// ──────────────────────────────────────
+function initConclusion(){
+  ['ci1','ci2','ci3','ci4'].forEach(id=>document.getElementById(id)?.classList.remove('show'));
+}
+function stepConclusion(s){
+  const items=['ci1','ci2','ci3','ci4'];
+  items.forEach(id=>document.getElementById(id)?.classList.remove('show'));
+  for(let i=0;i<=s;i++){
+    const el=document.getElementById(items[i]); if(!el) continue;
+    setTimeout(()=>el.classList.add('show'), i===s ? 80 : 0);
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// KEYBOARD + TOUCH
+// ══════════════════════════════════════════════════════════
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();advance();}
+  if(e.key==='ArrowLeft'){e.preventDefault();retreat();}
+});
+let tx=0;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{ const dx=e.changedTouches[0].clientX-tx; if(Math.abs(dx)>50){dx<0?advance():retreat();} });
+
+// ══════════════════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════════════════
+window.addEventListener('load',()=>{
+  activateSlide(0,0);
+  updateUI();
+});
+</script>
+</body>
+</html>
