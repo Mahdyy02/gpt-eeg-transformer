@@ -69,6 +69,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--black)
 /* ──────────────────────────────────────
    SLIDE 1, brain wave SVG
 ────────────────────────────────────── */
+.card-icon{width:36px;height:36px;margin:0 auto 1.2vh;display:flex;align-items:center;justify-content:center}
 .brain-wave{width:min(420px,70vw);height:100px;margin:0 auto 3vh;opacity:0}
 .slide.active .brain-wave{animation:up .7s .05s forwards cubic-bezier(.4,0,.2,1)}
 .brain-wave path{stroke-dasharray:600;stroke-dashoffset:600}
@@ -93,6 +94,77 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--black)
 .seq-arrow{color:#bbb;margin:0 10px;font-size:clamp(18px,2vw,24px)}
 .seq-group{display:flex;flex-direction:column;gap:clamp(10px,1.5vh,18px)}
 .seq-line-label{font-size:clamp(11px,.85vw,13px);letter-spacing:.12em;text-transform:uppercase;color:var(--gray);margin-right:16px;width:52px;text-align:right;flex-shrink:0;margin-right:50px;}
+
+
+/* ── SOTA slide ── */
+.sota-icon{width:32px;height:32px;margin:0 auto .6vh;display:flex;align-items:center;justify-content:center}
+.sota-step{border:1px solid #e8e8e8;border-radius:14px;padding:clamp(12px,2vh,22px) clamp(14px,1.8vw,22px);text-align:center;min-width:clamp(120px,13vw,160px);background:#fff}
+.sota-step--gray{border-color:#ddd;background:#fafafa}
+.sota-icon{font-size:clamp(22px,2.8vw,34px);margin-bottom:.6vh}
+.sota-title{font-size:clamp(13px,1.2vw,17px);font-weight:600;color:var(--black);margin-bottom:.4vh}
+.sota-sub{font-size:clamp(11px,.9vw,14px);color:var(--gray);line-height:1.4;margin-bottom:.5vh}
+.sota-year{font-size:clamp(10px,.8vw,13px);color:#bbb;letter-spacing:.05em}
+.sota-arrow{font-size:clamp(18px,2.2vw,26px);color:#ccc;display:flex;align-items:center;padding-bottom:18px}
+.sota-gap-box{border:1px solid #e8e8e8;border-radius:14px;padding:clamp(14px,2vh,26px) clamp(16px,2.2vw,28px);flex:1;min-width:clamp(240px,30vw,340px)}
+.sota-gap-box--bad .sota-gap-label{font-size:clamp(11px,.85vw,14px);letter-spacing:.14em;text-transform:uppercase;color:var(--gray);margin-bottom:1vh}
+.sota-gap-box--good{border-color:#0a0a0a;background:var(--black)}
+.sota-gap-box--good .sota-gap-label{font-size:clamp(11px,.85vw,14px);letter-spacing:.14em;text-transform:uppercase;color:#666;margin-bottom:1vh}
+.sota-gap-item{font-size:clamp(13px,1.1vw,16px);color:#444;line-height:1.65}
+.sota-gap-box--good .sota-gap-item{color:#fff}
+
+/* ══ SOTA paper slides ══ */
+.sota-paper-wrap{display:flex;align-items:center;justify-content:space-evenly;flex-direction:row;width:100%;max-width:min(1300px,99vw)}
+.sota-paper-diagram{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.2vh,14px);flex-shrink:0}
+.sp-row{display:flex;gap:6px;align-items:center}
+.sp-tok{border:1px solid #e0e0e0;border-radius:8px;padding:8px 12px;font-size:clamp(12px,1vw,15px);font-weight:500;color:var(--black);background:#fafafa}
+.sp-tok--gray{background:#f5f5f5;color:#666}
+.sp-tok--faded{color:#bbb;border-color:transparent;font-size:18px;letter-spacing:2px}
+.sp-arrow-down{font-size:clamp(11px,.9vw,14px);color:#aaa;text-align:center;max-width:260px}
+.sp-transformer-box{border:1.5px solid #0a0a0a;border-radius:12px;padding:clamp(10px,1.5vh,18px) clamp(20px,3vw,36px);text-align:center;min-width:clamp(180px,22vw,260px)}
+.sp-transformer-box--purple{border-color:#534AB7}
+.sp-transformer-box--teal{border-color:#0F6E56}
+.sp-tf-label{font-size:clamp(12px,1vw,15px);font-weight:600;color:var(--black);margin-bottom:6px}
+.sp-tf-inner{display:flex;gap:6px;justify-content:center;align-items:center;flex-wrap:wrap}
+.sp-tf-head{border:1px solid #e0e0e0;border-radius:6px;padding:4px 10px;font-size:clamp(10px,.85vw,13px);color:#555;background:#fafafa}
+.sp-tf-head--purple{border-color:#AFA9EC;background:#EEEDFE;color:#3C3489}
+.sp-tf-sep{color:#bbb;font-size:16px}
+.sp-output-row{display:flex;gap:10px;align-items:center}
+.sp-out-box{border:1px solid #0a0a0a;border-radius:8px;padding:8px 18px;font-size:clamp(12px,1vw,15px);font-weight:600}
+.sp-out-sep{font-size:clamp(12px,1vw,15px);color:#aaa}
+
+/* spectrogram */
+.sp-spectrogram{border:1px solid #e8e8e8;border-radius:12px;padding:12px 16px;background:#fafafa}
+.sp-spec-label{font-size:clamp(10px,.82vw,13px);color:#aaa;letter-spacing:.08em;margin-bottom:8px;text-align:center}
+.sp-spec-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:6px;position:relative}
+.sp-patch{width:clamp(32px,4vw,48px);height:clamp(22px,2.8vh,32px);border-radius:4px;background:#e8e8e8}
+.sp-patch--masked{background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+.sp-spec-axes{display:flex;justify-content:flex-end;font-size:11px;color:#aaa;position:relative;height:14px}
+
+/* graph */
+.sp-graph-wrap{display:flex;flex-direction:column;align-items:center}
+.sp-graph-caption{font-size:clamp(11px,.88vw,13px);color:#aaa;text-align:center;max-width:240px;margin-top:2px}
+
+/* latent */
+.sp-latent-row{display:flex;align-items:center;gap:clamp(8px,1.5vw,18px);flex-wrap:wrap;justify-content:center}
+.sp-latent-block{display:flex;flex-direction:column;align-items:center;gap:6px}
+.sp-lb-label{font-size:clamp(10px,.82vw,13px);color:#aaa;letter-spacing:.08em}
+.sp-lb-wave{border:1px solid #e8e8e8;border-radius:8px;padding:6px 10px;background:#fafafa}
+.sp-lm-arrow{font-size:clamp(11px,.9vw,14px);color:#bbb;white-space:nowrap}
+.sp-lats{display:flex;gap:4px}
+.sp-lat{width:clamp(22px,2.8vw,32px);height:clamp(22px,2.8vh,32px);border-radius:5px;background:#e8e8e8}
+.sp-lat--masked{background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.sp-lat--pred{background:#0a0a0a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+.sp-latent-block--latent .sp-lat{background:#ddd}
+.sp-latent-block--out .sp-lat{background:#e8e8e8}
+.sp-latent-note{font-size:clamp(11px,.9vw,14px);color:#aaa;margin-top:4px;font-style:italic;text-align:center}
+
+/* notes panel */
+.sota-paper-note{display:flex;flex-direction:column;gap:clamp(10px,1.5vh,18px);max-width:clamp(260px,34vw,400px);flex:1}
+.spn-idea,.spn-limit{border:1px solid #e8e8e8;border-radius:12px;padding:clamp(12px,1.8vh,20px) clamp(14px,1.8vw,22px)}
+.spn-limit{border-color:#f0f0f0;background:#fafafa}
+.spn-tag{font-size:clamp(10px,.8vw,12px);letter-spacing:.14em;text-transform:uppercase;color:#aaa;font-weight:600;margin-bottom:8px}
+.spn-tag--gray{color:#bbb}
+.spn-idea p,.spn-limit p,.spn-idea,.spn-limit{font-size:clamp(13px,1.1vw,16px);color:#444;line-height:1.65}
 
 /* ──────────────────────────────────────
    SLIDE 4, EEG brain diagram
@@ -267,9 +339,48 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--black)
     <div class="label">Context</div>
     <h2 class="heading">Transformers changed<br>language processing</h2>
     <div class="cards-row">
-      <div class="card"><div class="card-icon">🌐</div><div class="card-label">Translation</div><div class="card-sub">Seq → Seq</div></div>
-      <div class="card"><div class="card-icon">💬</div><div class="card-label">Chatbots</div><div class="card-sub">Context-aware</div></div>
-      <div class="card"><div class="card-icon">🧠</div><div class="card-label">Reasoning</div><div class="card-sub">Long-range deps</div></div>
+      <div class="card">
+        <div class="card-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="14" stroke="#0a0a0a" stroke-width="1.5"/>
+            <ellipse cx="18" cy="18" rx="6" ry="14" stroke="#0a0a0a" stroke-width="1.5"/>
+            <line x1="4" y1="18" x2="32" y2="18" stroke="#0a0a0a" stroke-width="1.5"/>
+            <line x1="6" y1="11" x2="30" y2="11" stroke="#0a0a0a" stroke-width="1.2"/>
+            <line x1="6" y1="25" x2="30" y2="25" stroke="#0a0a0a" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="card-label">Translation</div>
+        <div class="card-sub">Seq → Seq</div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="5" width="28" height="19" rx="4" stroke="#0a0a0a" stroke-width="1.5"/>
+            <path d="M12 29 L18 24 L24 29" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="14" r="1.8" fill="#0a0a0a"/>
+            <circle cx="18" cy="14" r="1.8" fill="#0a0a0a"/>
+            <circle cx="24" cy="14" r="1.8" fill="#0a0a0a"/>
+          </svg>
+        </div>
+        <div class="card-label">Chatbots</div>
+        <div class="card-sub">Context-aware</div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 22 Q8 16 10 12 Q13 6 18 6 Q23 6 26 12 Q28 16 26 22" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M10 22 Q10 26 13 27 L23 27 Q26 26 26 22" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="14" y1="27" x2="14" y2="30" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="22" y1="27" x2="22" y2="30" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="14" y1="30" x2="22" y2="30" stroke="#0a0a0a" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M15 17 Q16 14 18 14 Q20 14 21 17" stroke="#0a0a0a" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="card-label">Reasoning</div>
+        <div class="card-sub">Long-range deps</div>
+      </div>
     </div>
     <p class="body-text" style="margin-top:16px;color:var(--gray);font-size:16px">The secret? Transformers learn <strong style="color:var(--black)">long-range dependencies</strong> across any sequence (not just text).</p>
   </div>
@@ -318,6 +429,295 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--black)
       </div>
     </div>
     <p class="body-text" style="font-size:17px">Each EEG channel is a <strong>temporal sequence</strong>, just like a sentence.<br>Rhythms and patterns encode brain state.</p>
+  </div>
+</section>
+
+<!-- SLIDE SOTA, related work -->
+<section class="slide" id="slideSOTA">
+  <div class="stagger">
+    <div class="label">Related Work</div>
+    <h2 class="heading">What others tried<br>and what we simplified</h2>
+
+    <div style="display:flex;gap:clamp(8px,1.5vw,18px);justify-content:center;flex-wrap:wrap;margin:2vh 0 1vh">
+
+      <div class="sota-step">
+        <div class="sota-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="18" width="5" height="11" rx="1.5" stroke="#0a0a0a" stroke-width="1.4"/>
+            <rect x="11" y="12" width="5" height="17" rx="1.5" stroke="#0a0a0a" stroke-width="1.4"/>
+            <rect x="19" y="7" width="5" height="22" rx="1.5" stroke="#0a0a0a" stroke-width="1.4"/>
+            <path d="M5.5 17 L13.5 11 L21.5 6" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="5.5" cy="17" r="1.8" fill="#0a0a0a"/>
+            <circle cx="13.5" cy="11" r="1.8" fill="#0a0a0a"/>
+            <circle cx="21.5" cy="6" r="1.8" fill="#0a0a0a"/>
+          </svg>
+        </div>
+        <div class="sota-title">Handcrafted features</div>
+        <div class="sota-sub">SVM, RF · manual spectral bands</div>
+        <div class="sota-year">~2017</div>
+      </div>
+
+      <div class="sota-arrow">→</div>
+
+      <div class="sota-step">
+        <div class="sota-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="26" height="20" rx="2.5" stroke="#0a0a0a" stroke-width="1.4"/>
+            <rect x="7" y="8" width="18" height="12" rx="1.5" stroke="#0a0a0a" stroke-width="1.2"/>
+            <path d="M9 14 L12 11 L15 13 L18 10 L23 14" stroke="#0a0a0a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <line x1="12" y1="24" x2="20" y2="24" stroke="#0a0a0a" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="16" y1="24" x2="16" y2="28" stroke="#0a0a0a" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="sota-title">CNN on spectrograms</div>
+        <div class="sota-sub">image-based frequency features</div>
+        <div class="sota-year">~2021</div>
+      </div>
+
+      <div class="sota-arrow">→</div>
+
+      <div class="sota-step">
+        <div class="sota-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="2,16 6,8 10,20 14,10 18,18 22,12 26,16 30,16" stroke="#0a0a0a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <circle cx="6" cy="8" r="1.8" fill="#0a0a0a"/>
+            <circle cx="14" cy="10" r="1.8" fill="#0a0a0a"/>
+            <circle cx="22" cy="12" r="1.8" fill="#0a0a0a"/>
+          </svg>
+        </div>
+        <div class="sota-title">LSTM / RNN</div>
+        <div class="sota-sub">temporal, but short-range only</div>
+        <div class="sota-year">~2023</div>
+      </div>
+
+      <div class="sota-arrow">→</div>
+
+      <div class="sota-step sota-step--gray">
+        <div class="sota-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="10" width="24" height="7" rx="2" stroke="#0a0a0a" stroke-width="1.4"/>
+            <rect x="4" y="20" width="24" height="7" rx="2" stroke="#0a0a0a" stroke-width="1.4"/>
+            <line x1="9" y1="10" x2="9" y2="20" stroke="#0a0a0a" stroke-width="1.2" stroke-dasharray="2 2"/>
+            <line x1="16" y1="10" x2="16" y2="20" stroke="#0a0a0a" stroke-width="1.2" stroke-dasharray="2 2"/>
+            <line x1="23" y1="10" x2="23" y2="20" stroke="#0a0a0a" stroke-width="1.2" stroke-dasharray="2 2"/>
+            <path d="M9 6 L16 4 L23 6" stroke="#0a0a0a" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="sota-title">Transformer SSL</div>
+        <div class="sota-sub">BioSerenity, GMAEEG… population-level</div>
+        <div class="sota-year">~2024</div>
+      </div>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="display:flex;gap:clamp(12px,2vw,24px);justify-content:center;flex-wrap:wrap;max-width:min(860px,92vw);margin:0 auto">
+
+      <div class="sota-gap-box sota-gap-box--bad">
+        <div class="sota-gap-label">Common gap</div>
+        <div class="sota-gap-item">Population-level · not patient-specific</div>
+        <div class="sota-gap-item">Detection (post-ictal), not prediction</div>
+        <div class="sota-gap-item">Manual features or complex pipelines</div>
+      </div>
+
+      <div class="sota-gap-box sota-gap-box--good">
+        <div class="sota-gap-label">Our answer</div>
+        <div class="sota-gap-item">✓ Patient-specific fine-tuning</div>
+        <div class="sota-gap-item">✓ 30 s ahead prediction</div>
+        <div class="sota-gap-item">✓ Quantize → tokens → GPT. That's it.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE SOTA1 · Zerveas et al. 2021 -->
+<section class="slide" id="slideSOTA1">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;flex:1;min-height:0;gap:1.5vh;position:absolute;top:50%; transform:translateY(-50%);">
+    <div class="label">Related Work · Transformers for Time Series</div>
+    <h2 class="heading">Zerveas et al., 2021<br><em>The proof that transformers work on any sequence</em></h2>
+    <div class="sota-paper-wrap">
+      <div class="sota-paper-diagram" id="sp1diag">
+        <div class="sp-row">
+          <div class="sp-tok sp-tok--gray">ch₁ t₁</div>
+          <div class="sp-tok sp-tok--gray">ch₁ t₂</div>
+          <div class="sp-tok sp-tok--gray">ch₁ t₃</div>
+          <div class="sp-tok sp-tok--faded">…</div>
+          <div class="sp-tok sp-tok--gray">ch₁ tₙ</div>
+        </div>
+        <div class="sp-arrow-down">↓ flatten &amp; embed</div>
+        <div class="sp-transformer-box">
+          <div class="sp-tf-label">Transformer encoder</div>
+          <div class="sp-tf-inner">
+            <span class="sp-tf-head">head 1</span>
+            <span class="sp-tf-head">head 2</span>
+            <span class="sp-tf-head">head 3</span>
+            <span class="sp-tf-head">head 4</span>
+          </div>
+        </div>
+        <div class="sp-arrow-down">↓</div>
+        <div class="sp-output-row">
+          <div class="sp-out-box">Classification</div>
+          <div class="sp-out-sep">or</div>
+          <div class="sp-out-box">Regression</div>
+        </div>
+      </div>
+      <div class="sota-paper-note fade-item" id="sp1note">
+        <div class="spn-idea">
+          <div class="spn-tag">Core idea</div>
+          Flatten multivariate time series into a token sequence, run a transformer encoder, use the output for any downstream task.
+        </div>
+        <div class="spn-limit">
+          <div class="spn-tag spn-tag--gray">Limitation for us</div>
+          Fully supervised — needs labeled data for every task. No self-supervised pretraining. Population-level, not patient-specific.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE SOTA2 · BioSerenity-E1 2025 -->
+<section class="slide" id="slideSOTA2">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;flex:1;min-height:0;gap:1.5vh">
+    <div class="label">Related Work · Spectral Masking</div>
+    <h2 class="heading">BioSerenity-E1, 2025<br><em>Mask a spectrogram patch, predict it back</em></h2>
+    <div class="sota-paper-wrap">
+      <div class="sota-paper-diagram" id="sp2diag">
+        <div class="sp-spectrogram">
+          <div class="sp-spec-label">EEG spectrogram (time × freq)</div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:11px;color:#aaa;writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.05em">freq ↑</span>
+            <div class="sp-spec-grid">
+              <div class="sp-patch"></div><div class="sp-patch"></div><div class="sp-patch sp-patch--masked">?</div><div class="sp-patch"></div>
+              <div class="sp-patch"></div><div class="sp-patch sp-patch--masked">?</div><div class="sp-patch"></div><div class="sp-patch"></div>
+              <div class="sp-patch sp-patch--masked">?</div><div class="sp-patch"></div><div class="sp-patch"></div><div class="sp-patch"></div>
+            </div>
+          </div>
+          <div style="text-align:right;font-size:11px;color:#aaa;margin-top:4px;padding-right:2px">time →</div>
+        </div>
+        <div class="sp-arrow-down">↓ transformer reconstructs masked patches</div>
+        <div class="sp-transformer-box sp-transformer-box--purple">
+          <div class="sp-tf-label">Masked autoencoder</div>
+          <div class="sp-tf-inner">
+            <span class="sp-tf-head sp-tf-head--purple">encode</span>
+            <span class="sp-tf-sep">→</span>
+            <span class="sp-tf-head sp-tf-head--purple">decode</span>
+          </div>
+        </div>
+      </div>
+      <div class="sota-paper-note fade-item" id="sp2note">
+        <div class="spn-idea">
+          <div class="spn-tag">Core idea</div>
+          Convert EEG to a spectrogram image, divide into patches, mask some randomly, train the model to reconstruct them. Self-supervised — no labels needed.
+        </div>
+        <div class="spn-limit">
+          <div class="spn-tag spn-tag--gray">Limitation for us</div>
+          Works on spectrograms (2D images), not raw signal tokens. Targets detection and classification, not prediction. Population-level evaluation only.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE SOTA3 · GMAEEG 2024 -->
+<section class="slide" id="slideSOTA3">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;flex:1;min-height:0;gap:1.5vh">
+    <div class="label">Related Work · Graph Masking</div>
+    <h2 class="heading">GMAEEG, 2024<br><em>EEG channels as nodes in a graph</em></h2>
+    <div class="sota-paper-wrap">
+      <div class="sota-paper-diagram" id="sp3diag">
+        <div class="sp-graph-wrap">
+          <svg viewBox="0 0 260 160" width="260" height="160" style="overflow:visible">
+            <line x1="130" y1="30" x2="50" y2="100" stroke="#ddd" stroke-width="1"/>
+            <line x1="130" y1="30" x2="130" y2="110" stroke="#ddd" stroke-width="1"/>
+            <line x1="130" y1="30" x2="210" y2="100" stroke="#ddd" stroke-width="1"/>
+            <line x1="50" y1="100" x2="130" y2="110" stroke="#ddd" stroke-width="1"/>
+            <line x1="210" y1="100" x2="130" y2="110" stroke="#ddd" stroke-width="1"/>
+            <line x1="50" y1="100" x2="210" y2="100" stroke="#ddd" stroke-width="1" stroke-dasharray="4 3"/>
+            <circle cx="130" cy="30" r="18" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/>
+            <text x="130" y="35" text-anchor="middle" font-size="10" fill="#555" font-family="DM Sans,sans-serif">Fp1</text>
+            <circle cx="50" cy="100" r="18" fill="#0a0a0a" stroke="#0a0a0a" stroke-width="1"/>
+            <text x="50" y="104" text-anchor="middle" font-size="10" fill="#fff" font-family="DM Sans,sans-serif">C3</text>
+            <circle cx="210" cy="100" r="18" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/>
+            <text x="210" y="104" text-anchor="middle" font-size="10" fill="#555" font-family="DM Sans,sans-serif">O1</text>
+            <circle cx="130" cy="110" r="18" fill="#f0f0f0" stroke="#bbb" stroke-width="1"/>
+            <text x="130" y="114" text-anchor="middle" font-size="10" fill="#555" font-family="DM Sans,sans-serif">T3</text>
+            <text x="50" y="136" text-anchor="middle" font-size="9" fill="#aaa" font-family="DM Sans,sans-serif">masked node</text>
+          </svg>
+          <div class="sp-graph-caption">Mask a node's features → train transformer to reconstruct them from neighbours</div>
+        </div>
+        <div class="sp-arrow-down">↓ graph transformer</div>
+        <div class="sp-transformer-box sp-transformer-box--teal">
+          <div class="sp-tf-label">Spatiotemporal representation</div>
+        </div>
+      </div>
+      <div class="sota-paper-note fade-item" id="sp3note">
+        <div class="spn-idea">
+          <div class="spn-tag">Core idea</div>
+          Model EEG channels as graph nodes connected by spatial proximity. Mask a channel's features and train a graph transformer to recover them from neighbouring channels.
+        </div>
+        <div class="spn-limit">
+          <div class="spn-tag spn-tag--gray">Limitation for us</div>
+          Spatial structure requires fixed electrode layouts. Population-level — no patient adaptation. Focused on seizure detection, not forecasting.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SLIDE SOTA4 · EEG2Rep 2024 -->
+<section class="slide" id="slideSOTA4">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;flex:1;min-height:0;gap:1.5vh">
+    <div class="label">Related Work · Latent Masking</div>
+    <h2 class="heading">EEG2Rep, 2024<br><em>Mask in latent space, not in the raw signal</em></h2>
+    <div class="sota-paper-wrap">
+      <div class="sota-paper-diagram" id="sp4diag">
+        <div class="sp-latent-row">
+          <div class="sp-latent-block sp-latent-block--signal">
+            <div class="sp-lb-label">Raw EEG</div>
+            <div class="sp-lb-wave">
+              <svg viewBox="0 0 120 36" width="120" height="36">
+                <polyline points="0,18 10,18 18,6 26,30 34,10 42,26 50,14 60,19 70,8 78,28 86,12 94,24 102,16 112,18 120,18" fill="none" stroke="#0a0a0a" stroke-width="1.4" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <div class="sp-lm-arrow">→ encode →</div>
+          <div class="sp-latent-block sp-latent-block--latent">
+            <div class="sp-lb-label">Latent tokens</div>
+            <div class="sp-lats">
+              <div class="sp-lat"></div>
+              <div class="sp-lat sp-lat--masked">?</div>
+              <div class="sp-lat sp-lat--masked">?</div>
+              <div class="sp-lat"></div>
+              <div class="sp-lat"></div>
+            </div>
+          </div>
+          <div class="sp-lm-arrow">→ predict →</div>
+          <div class="sp-latent-block sp-latent-block--out">
+            <div class="sp-lb-label">Reconstructed</div>
+            <div class="sp-lats">
+              <div class="sp-lat"></div>
+              <div class="sp-lat sp-lat--pred">✓</div>
+              <div class="sp-lat sp-lat--pred">✓</div>
+              <div class="sp-lat"></div>
+              <div class="sp-lat"></div>
+            </div>
+          </div>
+        </div>
+        <div class="sp-latent-note">Masking happens <em>after</em> encoding — preserves semantic subsequences</div>
+      </div>
+      <div class="sota-paper-note fade-item" id="sp4note">
+        <div class="spn-idea">
+          <div class="spn-tag">Core idea</div>
+          First encode the raw EEG into latent representations, then mask tokens in that latent space. This preserves more meaningful structure than masking raw signals directly.
+        </div>
+        <div class="spn-limit">
+          <div class="spn-tag spn-tag--gray">Limitation for us</div>
+          Task-agnostic framework — not designed for seizure prediction. No patient-specific adaptation. Evaluated on cognitive / BCI tasks, not clinical EEG.
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -549,7 +949,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--black)
       <rect id="pBox1" x="90" y="38" width="400" height="100" rx="12" fill="none" stroke="#bbb" stroke-width="1.2" stroke-dasharray="6 3" opacity="0"/>
       <text id="pLbl1" x="240" y="30" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" letter-spacing="0.14em" fill="#999" opacity="0">PREPROCESSING</text>
 
-      <rect id="pBox2" x="495" y="38" width="372" height="100" rx="12" fill="none" stroke="#bbb" stroke-width="1.2" stroke-dasharray="6 3" opacity="0"/>
+      <rect id="pBox2" x="495" y="38" width="320" height="100" rx="12" fill="none" stroke="#bbb" stroke-width="1.2" stroke-dasharray="6 3" opacity="0"/>
       <text id="pLbl2" x="626" y="30" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="12" font-weight="600" letter-spacing="0.14em" fill="#999" opacity="0">TOKENIZATION</text>
 
       <!-- EEG Input ellipse  cx=46 cy=90 -->
@@ -912,6 +1312,11 @@ const REGISTRY = [
   { id:'slide2',    type:'simple' },
   { id:'slide3',    type:'simple' },
   { id:'slide4',    type:'simple' },
+  { id:'slideSOTA',  type:'simple' },
+  { id:'slideSOTA1', type:'stepped', steps:2 },
+  { id:'slideSOTA2', type:'stepped', steps:2 },
+  { id:'slideSOTA3', type:'stepped', steps:2 },
+  { id:'slideSOTA4', type:'stepped', steps:2 },
   { id:'slideBridge', type:'stepped', steps:3 },
   { id:'slidePA',   type:'stepped', steps:3 },
   { id:'slidePB',   type:'stepped', steps:3 },
@@ -1006,6 +1411,10 @@ function initSlide(si){
   if(id==='slidePipeline') initPipeline();
   if(id==='slideResults') initResults();
   if(id==='slideConclusion') initConclusion();
+  if(id==='slideSOTA1') initSOTAPaper('sp1note');
+  if(id==='slideSOTA2') initSOTAPaper('sp2note');
+  if(id==='slideSOTA3') initSOTAPaper('sp3note');
+  if(id==='slideSOTA4') initSOTAPaper('sp4note');
 }
 
 function runStep(si, st){
@@ -1021,6 +1430,10 @@ function runStep(si, st){
   if(id==='slidePipeline') stepPipeline(st);
   if(id==='slideResults') stepResults(st);
   if(id==='slideConclusion') stepConclusion(st);
+  if(id==='slideSOTA1') stepSOTAPaper('sp1note', st);
+  if(id==='slideSOTA2') stepSOTAPaper('sp2note', st);
+  if(id==='slideSOTA3') stepSOTAPaper('sp3note', st);
+  if(id==='slideSOTA4') stepSOTAPaper('sp4note', st);
 }
 
 // ──────────────────────────────────────
@@ -1097,7 +1510,7 @@ function initPA(){
   }
   ctx.stroke();
   ctx.font='11px DM Sans,sans-serif'; ctx.fillStyle='#bbb';
-  ctx.fillText('voltage (μV)',0,14); ctx.fillText('time →',w-52,H-4);
+  ctx.fillText('voltage (μV)',0,14); ctx.fillText('time →',w-52,H);
 
   const wrap=document.getElementById('canvasWrap');
   wrap.querySelectorAll('.sample-dot,.sample-line').forEach(e=>e.remove());
@@ -1407,6 +1820,15 @@ function stepConclusion(s){
     const el=document.getElementById(items[i]); if(!el) continue;
     setTimeout(()=>el.classList.add('show'), i===s ? 80 : 0);
   }
+}
+
+function initSOTAPaper(noteId){
+  document.getElementById(noteId)?.classList.remove('show');
+}
+function stepSOTAPaper(noteId, s){
+  const note = document.getElementById(noteId);
+  if(s === 0){ note?.classList.remove('show'); }
+  else if(s === 1){ note?.classList.add('show'); }
 }
 
 // ══════════════════════════════════════════════════════════
